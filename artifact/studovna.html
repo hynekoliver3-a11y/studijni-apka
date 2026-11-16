@@ -1,0 +1,2215 @@
+<title>Studovna</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap">
+<style>
+:root {
+  --bg: #f5f4fb;
+  --surface: #ffffff;
+  --surface-2: #f0eefa;
+  --border: #e3e0f0;
+  --text: #1c1a2b;
+  --muted: #6b6880;
+  --accent: #7c5cff;
+  --accent-2: #b15cff;
+  --accent-soft: #ece7ff;
+  --ok: #17a673;
+  --ok-soft: #dff5ec;
+  --bad: #e5484d;
+  --bad-soft: #fde8e8;
+  --warn: #d98a00;
+  --warn-soft: #fff1d6;
+  --mark: #ffe770;
+  --mark-text: #2a2400;
+  --shadow: 0 1px 2px rgba(30, 20, 80, .05), 0 8px 24px rgba(30, 20, 80, .07);
+  --radius: 16px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  --bg: #0f0e17;
+  --surface: #191825;
+  --surface-2: #222033;
+  --border: #2e2b44;
+  --text: #ecebf5;
+  --muted: #9a97b3;
+  --accent: #9580ff;
+  --accent-2: #c58bff;
+  --accent-soft: #2b2550;
+  --ok: #3ecf96;
+  --ok-soft: #12352a;
+  --bad: #ff6b70;
+  --bad-soft: #3d1a1d;
+  --warn: #ffb84d;
+  --warn-soft: #3b2c0e;
+  --mark: #6b5a00;
+  --mark-text: #fff6c2;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f0e17;
+  --surface: #191825;
+  --surface-2: #222033;
+  --border: #2e2b44;
+  --text: #ecebf5;
+  --muted: #9a97b3;
+  --accent: #9580ff;
+  --accent-2: #c58bff;
+  --accent-soft: #2b2550;
+  --ok: #3ecf96;
+  --ok-soft: #12352a;
+  --bad: #ff6b70;
+  --bad-soft: #3d1a1d;
+  --warn: #ffb84d;
+  --warn-soft: #3b2c0e;
+  --mark: #6b5a00;
+  --mark-text: #fff6c2;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { line-height: 1.2; margin: 0; letter-spacing: -.01em; }
+h1 { font-size: clamp(1.6rem, 4vw, 2.1rem); }
+p { margin: 0; }
+a { color: var(--accent); }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+.muted { color: var(--muted); }
+.small { font-size: .875rem; }
+.grow { flex: 1; min-width: 0; }
+.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.spacer { flex: 1; }
+
+/* ---------- tlačítka a formuláře ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface); font-weight: 600; font-size: .95rem; white-space: nowrap;
+  transition: transform .08s, background .15s, border-color .15s, box-shadow .15s;
+}
+.btn:hover { border-color: var(--accent); }
+.btn:active { transform: scale(.97); }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; border-color: transparent; box-shadow: 0 6px 18px rgba(124, 92, 255, .35); }
+.btn.primary:hover { filter: brightness(1.07); }
+.btn.ghost { background: transparent; border-color: transparent; }
+.btn.ghost:hover { background: var(--surface-2); }
+.btn.danger { color: var(--bad); }
+.btn.sm { padding: 6px 11px; font-size: .85rem; border-radius: 10px; }
+.btn.lg { padding: 14px 24px; font-size: 1.05rem; border-radius: 14px; }
+.btn.ok { background: var(--ok); color: #fff; border-color: transparent; }
+.btn.bad { background: var(--bad); color: #fff; border-color: transparent; }
+.icon-btn { width: 38px; height: 38px; padding: 0; border-radius: 12px; border: 1px solid transparent; background: transparent; display: inline-grid; place-items: center; font-size: 1.05rem; }
+.icon-btn:hover { background: var(--surface-2); }
+
+.input, textarea.input {
+  width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface); outline: none; transition: border-color .15s, box-shadow .15s;
+}
+.input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+textarea.input { resize: vertical; min-height: 96px; line-height: 1.5; }
+label.field { display: block; margin-bottom: 14px; }
+label.field > span { display: block; font-weight: 600; font-size: .875rem; margin-bottom: 6px; }
+label.field > span em { font-style: normal; font-weight: 400; color: var(--muted); }
+
+/* ---------- horní lišta ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 12px;
+  padding: 10px clamp(14px, 3vw, 28px); background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px); border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; text-decoration: none; color: var(--text); }
+.logo i { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; font-style: normal; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 4px 12px rgba(124, 92, 255, .4); }
+.crumbs { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--muted); font-size: .95rem; }
+.crumbs a { color: var(--muted); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 28vw; }
+.crumbs a:hover { color: var(--text); }
+.avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 700; border: 0; flex: none; }
+.avatar.big { width: 84px; height: 84px; font-size: 2rem; }
+
+.page { max-width: 1120px; margin: 0 auto; padding: clamp(18px, 4vw, 40px) clamp(14px, 3vw, 28px) 96px; }
+.banner { padding: 12px 16px; border-radius: 12px; background: var(--warn-soft); color: var(--warn); border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent); margin-bottom: 18px; font-size: .92rem; }
+.banner.bad { background: var(--bad-soft); color: var(--bad); border-color: color-mix(in srgb, var(--bad) 30%, transparent); }
+
+/* ---------- vstupní obrazovky ---------- */
+.center-screen { min-height: 100dvh; display: grid; place-items: center; padding: 24px; background: radial-gradient(1200px 600px at 50% -10%, var(--accent-soft), transparent 60%); }
+.center-card { width: min(520px, 100%); text-align: center; }
+.center-card h1 { margin: 18px 0 8px; }
+.profiles { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin: 32px 0; }
+.profile { background: none; border: 0; padding: 14px; border-radius: 20px; display: grid; gap: 10px; justify-items: center; font-weight: 600; transition: background .15s, transform .15s; }
+.profile:hover { background: var(--surface); transform: translateY(-3px); box-shadow: var(--shadow); }
+.avatar.add { background: var(--surface); color: var(--muted); border: 2px dashed var(--border); font-weight: 400; }
+
+/* ---------- karty ---------- */
+.hero { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; }
+.hero p { color: var(--muted); margin-top: 6px; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.subject {
+  position: relative; padding: 20px; text-decoration: none; color: inherit; display: block; overflow: hidden;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.subject::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: var(--c); }
+.subject:hover, .topic:hover { transform: translateY(-3px); border-color: var(--c, var(--accent)); }
+.subject .emoji { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; font-size: 1.7rem; background: color-mix(in srgb, var(--c) 16%, transparent); margin-bottom: 14px; }
+.subject h3 { font-size: 1.15rem; margin-bottom: 4px; }
+.card-menu { position: absolute; top: 12px; right: 10px; opacity: 0; transition: opacity .15s; }
+.subject:hover .card-menu, .topic:hover .card-menu, .card-menu:focus-within { opacity: 1; }
+@media (hover: none) { .card-menu { opacity: 1; } }
+.add-card { border: 2px dashed var(--border); background: transparent; border-radius: var(--radius); min-height: 150px; display: grid; place-items: center; color: var(--muted); font-weight: 600; transition: .15s; }
+.add-card:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+.topics { display: grid; gap: 12px; }
+.topic { position: relative; display: flex; align-items: center; gap: 16px; padding: 16px 20px; text-decoration: none; color: inherit; transition: transform .15s, border-color .15s; }
+.topic h3 { font-size: 1.08rem; margin-bottom: 6px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); font-size: .8rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.chip.accent { background: var(--accent-soft); color: var(--accent); }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.chip.warn { background: var(--warn-soft); color: var(--warn); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.empty { text-align: center; padding: 56px 20px; color: var(--muted); }
+.empty .big { font-size: 3rem; margin-bottom: 10px; }
+.empty h3 { color: var(--text); margin-bottom: 6px; }
+.empty .btn { margin-top: 18px; }
+
+/* ---------- téma ---------- */
+.topic-layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 24px; max-width: 1400px; margin: 0 auto; padding: 22px clamp(14px, 3vw, 28px) 40px; align-items: start; }
+.topic-head { margin-bottom: 16px; }
+.topic-head h1 { font-size: clamp(1.4rem, 3.4vw, 1.9rem); display: inline; }
+.tabs { display: flex; gap: 4px; padding: 5px; background: var(--surface-2); border-radius: 14px; margin: 16px 0; overflow-x: auto; scrollbar-width: none; }
+.tab { flex: 1; padding: 9px 14px; border: 0; background: transparent; border-radius: 10px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+.tab .n { font-weight: 500; opacity: .7; margin-left: 4px; }
+.pane { padding: clamp(16px, 3vw, 30px); min-height: 380px; }
+.pane-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+
+/* výpisky */
+.prose { font-size: 1.02rem; line-height: 1.7; overflow-wrap: break-word; }
+.prose > :first-child { margin-top: 0; }
+.prose h1, .prose h2 { font-size: 1.4rem; margin: 1.7em 0 .6em; padding-bottom: .35em; border-bottom: 2px solid var(--accent-soft); }
+.prose h3 { font-size: 1.13rem; margin: 1.4em 0 .4em; color: var(--accent); }
+.prose h4 { margin: 1.2em 0 .3em; }
+.prose p { margin: .7em 0; }
+.prose ul, .prose ol { padding-left: 1.4em; margin: .6em 0; }
+.prose li { margin: .25em 0; }
+.prose li::marker { color: var(--accent); }
+.prose mark { background: var(--mark); color: var(--mark-text); padding: .08em .28em; border-radius: 5px; cursor: pointer; }
+.prose blockquote { margin: 1em 0; padding: .6em 1em; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 12px 12px 0; }
+.prose code { background: var(--surface-2); padding: .12em .4em; border-radius: 6px; font-size: .9em; }
+.prose pre { background: var(--surface-2); padding: 14px; border-radius: 12px; overflow-x: auto; }
+.prose pre code { background: none; padding: 0; }
+.prose table { border-collapse: collapse; margin: 1em 0; display: block; overflow-x: auto; max-width: 100%; }
+.prose th, .prose td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; vertical-align: top; }
+.prose th { background: var(--surface-2); }
+.prose hr { border: 0; border-top: 1px solid var(--border); margin: 1.6em 0; }
+.prose .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+.notes-editor { min-height: 60vh; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9rem; }
+.sel-bar { position: absolute; z-index: 30; display: flex; gap: 4px; padding: 5px; background: var(--text); border-radius: 12px; box-shadow: var(--shadow); transform: translate(-50%, -100%); }
+.sel-bar button { border: 0; background: transparent; color: var(--bg); padding: 6px 10px; border-radius: 8px; font-weight: 600; font-size: .85rem; white-space: nowrap; }
+.sel-bar button:hover { background: color-mix(in srgb, var(--bg) 18%, transparent); }
+
+/* průběh zpracování */
+.steps { display: grid; gap: 12px; max-width: 440px; margin: 28px auto; text-align: left; }
+.step { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px; background: var(--surface-2); font-weight: 600; }
+.step .dot { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--border); font-size: .85rem; flex: none; }
+.step.done .dot { background: var(--ok); color: #fff; }
+.step.error .dot { background: var(--bad); color: #fff; }
+.step.wait, .step.skip { opacity: .5; }
+.spinner { width: 20px; height: 20px; border-radius: 50%; border: 3px solid var(--accent-soft); border-top-color: var(--accent); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* kartičky */
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.stat { padding: 14px; border-radius: 14px; background: var(--surface-2); }
+.stat b { display: block; font-size: 1.5rem; line-height: 1.1; }
+.stat span { font-size: .82rem; color: var(--muted); }
+.card-list { display: grid; gap: 8px; }
+.fc-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; align-items: start; font-size: .95rem; }
+.fc-row .q { font-weight: 600; }
+.fc-row .prose { font-size: .95rem; line-height: 1.5; }
+.fc-row .prose p { margin: 0; }
+.boxes { display: flex; gap: 3px; margin-top: 6px; }
+.boxes i { width: 14px; height: 4px; border-radius: 2px; background: var(--border); }
+.boxes i.on { background: var(--ok); }
+
+.study { max-width: 640px; margin: 0 auto; }
+.progress { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; margin: 10px 0 22px; }
+.progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 99px; transition: width .3s; }
+.flip { perspective: 1400px; height: min(52vh, 380px); cursor: pointer; user-select: none; }
+.flip-inner { position: relative; width: 100%; height: 100%; transition: transform .5s cubic-bezier(.3, .8, .3, 1); transform-style: preserve-3d; }
+.flip.flipped .flip-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: auto; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow); }
+.face .tag { position: absolute; top: 16px; left: 20px; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.face .prose { font-size: clamp(1.1rem, 3vw, 1.45rem); line-height: 1.4; font-weight: 600; }
+.face.back { transform: rotateY(180deg); background: linear-gradient(160deg, var(--accent-soft), var(--surface)); }
+.face.back .prose { font-weight: 500; }
+.study-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.study .when-back, .study.is-flipped .when-front { display: none; }
+.study.is-flipped .when-back { display: block; }
+.hint { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 14px; }
+kbd { background: var(--surface-2); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 6px; padding: 1px 6px; font-size: .8rem; font-family: inherit; }
+
+/* test */
+.question { max-width: 720px; margin: 0 auto; }
+.question h2 { font-size: clamp(1.15rem, 3vw, 1.4rem); line-height: 1.4; margin: 6px 0 20px; font-weight: 650; }
+.question h2 p { margin: 0; }
+.options { display: grid; gap: 10px; }
+.option { display: flex; gap: 12px; align-items: center; text-align: left; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--border); background: var(--surface); font-weight: 500; transition: .12s; width: 100%; }
+.option:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.option .key { width: 28px; height: 28px; border-radius: 9px; background: var(--surface-2); display: grid; place-items: center; font-weight: 700; font-size: .85rem; flex: none; }
+.option .prose { font-size: 1rem; line-height: 1.45; }
+.option .prose p { margin: 0; }
+.option.right { border-color: var(--ok); background: var(--ok-soft); }
+.option.right .key { background: var(--ok); color: #fff; }
+.option.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.option.wrong .key { background: var(--bad); color: #fff; }
+.option:disabled { cursor: default; opacity: 1; }
+.feedback { margin-top: 18px; padding: 14px 16px; border-radius: 14px; background: var(--surface-2); border-left: 5px solid var(--muted); }
+.feedback.right { background: var(--ok-soft); border-color: var(--ok); }
+.feedback.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.feedback.partial { background: var(--warn-soft); border-color: var(--warn); }
+.feedback b { display: block; margin-bottom: 4px; }
+.feedback .prose { font-size: .95rem; line-height: 1.55; }
+.feedback .prose p { margin: .3em 0; }
+.score-ring { --p: 0; width: 170px; height: 170px; border-radius: 50%; margin: 10px auto 18px; display: grid; place-items: center; background: conic-gradient(var(--accent) calc(var(--p) * 1%), var(--surface-2) 0); }
+.score-ring div { width: 136px; height: 136px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-size: 2.3rem; font-weight: 800; }
+.review { display: grid; gap: 10px; margin-top: 22px; text-align: left; }
+.review-item { padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border); border-left: 5px solid var(--bad); }
+.review-item.right { border-left-color: var(--ok); }
+.review-item.partial { border-left-color: var(--warn); }
+.review-item .prose { font-size: .95rem; line-height: 1.5; }
+.review-item .prose p { margin: .25em 0; }
+.history { display: flex; gap: 6px; align-items: flex-end; height: 64px; margin: 10px 0 4px; }
+.history i { flex: 1; max-width: 34px; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, var(--accent-2), var(--accent)); min-height: 4px; position: relative; }
+.q-row { display: flex; gap: 12px; align-items: start; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; font-size: .93rem; }
+.q-row .prose { font-size: .93rem; line-height: 1.45; }
+.q-row .prose p { margin: 0; }
+details.manage { margin-top: 26px; }
+details.manage summary { cursor: pointer; font-weight: 600; color: var(--muted); padding: 8px 0; }
+
+/* materiály */
+.source { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+.source summary { display: flex; align-items: center; gap: 12px; padding: 12px 14px; cursor: pointer; list-style: none; font-weight: 600; }
+.source summary::-webkit-details-marker { display: none; }
+.source pre { margin: 0; padding: 14px; background: var(--surface-2); white-space: pre-wrap; overflow-wrap: anywhere; font: .85rem/1.5 ui-monospace, Menlo, monospace; max-height: 420px; overflow: auto; }
+
+/* ---------- chat ---------- */
+.chat { position: sticky; top: 76px; height: calc(100dvh - 96px); display: flex; flex-direction: column; overflow: hidden; }
+.chat-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+.chat-head .ai { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+.chat-head b { display: block; line-height: 1.2; }
+.chat-body { flex: 1; overflow-y: auto; padding: 16px 14px; display: flex; flex-direction: column; gap: 12px; overscroll-behavior: contain; }
+.msg { max-width: 92%; padding: 10px 14px; border-radius: 16px; font-size: .95rem; }
+.msg.user { align-self: flex-end; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; border-bottom-right-radius: 5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg.assistant { align-self: flex-start; background: var(--surface-2); border-bottom-left-radius: 5px; }
+.msg .prose { font-size: .95rem; line-height: 1.6; }
+.msg .prose h1, .msg .prose h2 { font-size: 1.08rem; border: 0; padding: 0; margin: 1em 0 .4em; }
+.msg .prose h3 { font-size: 1rem; }
+.msg .prose > :last-child { margin-bottom: 0; }
+.msg .actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.msg .actions:first-child { margin-top: 0; }
+.msg.error { background: var(--bad-soft); color: var(--bad); }
+.typing { display: inline-flex; gap: 4px; padding: 6px 2px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite; }
+.typing i:nth-child(2) { animation-delay: .2s; }
+.typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+.chat-intro { text-align: center; color: var(--muted); margin: auto 0; padding: 12px; }
+.chat-intro .big { font-size: 2.4rem; }
+.suggest { display: flex; gap: 6px; padding: 0 12px 10px; overflow-x: auto; scrollbar-width: none; }
+.suggest button { border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 6px 12px; font-size: .82rem; font-weight: 600; white-space: nowrap; }
+.suggest button:hover { border-color: var(--accent); color: var(--accent); }
+.chat-input { display: flex; gap: 8px; padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); align-items: flex-end; }
+.chat-input textarea { flex: 1; min-height: 44px; max-height: 160px; resize: none; }
+.chat-input .btn { height: 44px; width: 44px; padding: 0; border-radius: 14px; font-size: 1.1rem; }
+.fab { display: none; position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 25; height: 56px; padding: 0 22px; border-radius: 99px; }
+.chat-close { display: none; }
+
+/* ---------- modály a toasty ---------- */
+.overlay { position: fixed; inset: 0; z-index: 50; background: rgba(12, 10, 30, .55); backdrop-filter: blur(4px); display: grid; place-items: center; padding: 16px; animation: fade .15s; }
+.modal { width: min(560px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; padding: 24px; animation: pop .18s; }
+.modal h2 { font-size: 1.3rem; margin-bottom: 18px; }
+.modal-foot { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+.picks { display: flex; gap: 8px; flex-wrap: wrap; }
+.pick { width: 40px; height: 40px; border-radius: 12px; border: 2px solid transparent; background: var(--surface-2); font-size: 1.25rem; display: grid; place-items: center; padding: 0; }
+.pick.color { border-radius: 50%; width: 34px; height: 34px; }
+.pick.on { border-color: var(--text); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent); }
+.drop { border: 2px dashed var(--border); border-radius: 16px; padding: 26px 16px; text-align: center; color: var(--muted); transition: .15s; cursor: pointer; margin-bottom: 14px; }
+.drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.drop .big { font-size: 2rem; }
+.files { display: grid; gap: 6px; margin-bottom: 14px; }
+.file { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface-2); border-radius: 10px; font-size: .9rem; }
+.file span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#toasts { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 60; display: grid; gap: 8px; justify-items: center; pointer-events: none; }
+.toast { background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: .92rem; box-shadow: var(--shadow); animation: pop .2s; max-width: 90vw; }
+.toast.bad { background: var(--bad); color: #fff; }
+
+/* ---------- mobil ---------- */
+@media (max-width: 1020px) {
+  .topic-layout { grid-template-columns: minmax(0, 1fr); padding-bottom: 100px; }
+  .chat { display: none; position: fixed; inset: 0; z-index: 40; height: 100dvh; top: 0; border-radius: 0; border: 0; }
+  .chat.open { display: flex; }
+  .chat-close { display: inline-grid; }
+  .fab { display: inline-flex; }
+}
+@media (max-width: 640px) {
+  .fc-row { grid-template-columns: 1fr auto; }
+  .fc-row .a { grid-column: 1; grid-row: 2; color: var(--muted); }
+  .fc-row .ops { grid-row: 1 / span 2; grid-column: 2; }
+  .crumbs a { max-width: 34vw; }
+  .logo span { display: none; }
+  .modal { padding: 18px; }
+}
+
+/* ---------- tisk výpisků ---------- */
+@media print {
+  .topbar, .tabs, .pane-tools, .chat, .fab, #toasts, .sel-bar, .banner { display: none !important; }
+  body { background: #fff; color: #000; }
+  .topic-layout { display: block; padding: 0; }
+  .card, .pane { border: 0; box-shadow: none; padding: 0; }
+  .prose mark { background: #ffe770; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ---------- úpravy pro artifact ---------- */
+:root { --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; --display: "Space Grotesk", "Inter", system-ui, sans-serif; }
+html, body { height: 100%; }
+h1, h2, h3, .logo { font-family: var(--display); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.topbar { top: env(safe-area-inset-top, 0px); }
+.topbar, .page, .topic-layout { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.fab { right: calc(18px + env(safe-area-inset-right, 0px)); }
+.center-screen { min-height: 70vh; }
+.chat { top: calc(76px + env(safe-area-inset-top, 0px)); }
+math { font-size: 1.12em; }
+math[display="block"] { margin: .8em 0; overflow-x: auto; max-width: 100%; }
+@media (max-width: 1020px) {
+  .chat { top: 0; padding-top: env(safe-area-inset-top, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+<div id="app"><div class="center-screen"><div class="center-card"><div class="spinner" style="margin:0 auto 16px"></div><p class="muted">Načítám Studovnu…</p></div></div></div>
+<div id="modals"></div>
+<div id="toasts"></div>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+<script>
+/* Studovna jako artifact v Claude: žádný server ani API klíč.
+   Tenhle soubor nahrazuje server/*.js – data ukládá do úložiště artifactu (jen pro
+   přihlášeného uživatele) a AI volá přes účet toho, kdo má stránku otevřenou. */
+"use strict";
+
+window.Backend = (() => {
+  let db, sample, col;
+  let limits = {};
+  let index = { subjects: [], topics: [] };
+  const topics = new Map();   // id -> téma včetně zdrojů
+  const running = new Map();  // id -> průběh zpracování
+  const chatting = new Set();
+
+  class UserError extends Error {}
+  const clone = (v) => JSON.parse(JSON.stringify(v));
+  const str = (v, max = 200) => String(v ?? "").trim().slice(0, max);
+  const newId = (n = 10) => Array.from(crypto.getRandomValues(new Uint8Array(n)), (b) => "abcdefghijklmnopqrstuvwxyz0123456789"[b % 36]).join("");
+  const bytes = (s) => new TextEncoder().encode(s).length;
+  const need = (v, msg = "Nenalezeno.") => { if (!v) throw new UserError(msg); return v; };
+
+  const MAX_SOURCE_CHARS = 150000; // materiály jednoho tématu (limit dotazu na AI i velikosti dokumentu)
+  const DOC_LIMIT = 240 * 1024;
+
+  // ---------- úložiště ----------
+  const queues = new Map();
+  const pending = new Map();
+  // Do jednoho dokumentu smí běžet jen jeden zápis; další se sloučí a vezme až nejnovější stav.
+  function write(docId, getData) {
+    if (pending.has(docId)) return pending.get(docId);
+    const p = (queues.get(docId) || Promise.resolve()).catch(() => {}).then(() => {
+      pending.delete(docId);
+      return col.doc(docId).set(clone(getData()));
+    });
+    pending.set(docId, p);
+    queues.set(docId, p);
+    return p.catch((err) => { throw new UserError(storeError(err)); });
+  }
+
+  function storeError(err) {
+    if (err?.code === "quota_exceeded") return "Úložiště je plné. Smaž stará témata.";
+    if (err?.code === "invalid_argument") return "Téma je moc velké na uložení. Rozděl ho do víc témat.";
+    if (err?.code === "resource_exhausted") return "Moc zápisů najednou, zkus to za chvilku.";
+    return "Uložení se nepovedlo. Zkontroluj připojení a zkus to znovu.";
+  }
+
+  const withTimeout = (promise, ms, message) => Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new UserError(message)), ms)),
+  ]);
+
+  const dueCount = (t, now = Date.now()) => t.flashcards.filter((c) => (c.due || 0) <= now).length;
+
+  function summary(t) {
+    const last = t.attempts[t.attempts.length - 1];
+    return {
+      id: t.id, subjectId: t.subjectId, title: t.title, createdAt: t.createdAt, testDate: t.testDate || null,
+      error: t.error || null, cards: t.flashcards.length, dueAt: t.flashcards.map((c) => c.due || 0),
+      questions: t.quiz.length, hasNotes: Boolean(t.notes),
+      lastScore: last ? Math.round((last.score / last.total) * 100) : null,
+    };
+  }
+
+  const saveIndex = () => write("index", () => index);
+
+  function saveTopic(t) {
+    const i = index.topics.findIndex((x) => x.id === t.id);
+    if (i >= 0) index.topics[i] = summary(t); else index.topics.push(summary(t));
+    const core = () => {
+      const { sources, ...rest } = t;
+      // Dlouhá konverzace nesmí přerůst limit dokumentu: nejstarší zprávy odpadnou.
+      while (rest.chat.length > 2 && bytes(JSON.stringify(rest)) > DOC_LIMIT) rest.chat = rest.chat.slice(2);
+      t.chat = rest.chat;
+      return rest;
+    };
+    return Promise.all([write("t_" + t.id, core), saveIndex()]);
+  }
+  const saveSources = (t) => write("s_" + t.id, () => ({ sources: t.sources }));
+
+  async function getTopic(id) {
+    if (topics.has(id)) return topics.get(id);
+    const [core, src] = await withTimeout(Promise.all([col.doc("t_" + id).get(), col.doc("s_" + id).get()]), 15000, "Načtení tématu trvá moc dlouho. Zkus to znovu.");
+    if (!core.exists) throw new UserError("Téma neexistuje.");
+    const t = { notes: "", flashcards: [], quiz: [], attempts: [], chat: [], ...clone(core.data()), sources: src.exists ? clone(src.data()).sources || [] : [] };
+    topics.set(id, t);
+    return t;
+  }
+
+  function forClient(t) {
+    const progress = running.get(t.id);
+    return {
+      ...clone({ ...t, sources: undefined }),
+      status: progress ? "processing" : t.sources.length || t.notes ? "ready" : "error",
+      progress: progress ? { ...progress } : null,
+      sources: t.sources.map((s) => ({ id: s.id, name: s.name, kind: s.kind, chars: s.text.length, preview: s.text.slice(0, 6000) })),
+      due: dueCount(t),
+    };
+  }
+
+  function stateForClient() {
+    const now = Date.now();
+    return {
+      profiles: [{ id: "me", name: "", color: "#7c5cff" }],
+      subjects: index.subjects.map((s) => ({ ...s, profileId: "me" })),
+      topics: index.topics.map((t) => ({
+        ...t, status: running.has(t.id) ? "processing" : "ready",
+        due: (t.dueAt || []).filter((d) => d <= now).length,
+      })),
+    };
+  }
+
+  // ---------- AI ----------
+  function aiError(err) {
+    if (err instanceof UserError) return err.message;
+    const messages = {
+      not_granted: "Stránka nemá povolení používat Claude. Obnov ji a v dotazu to povol.",
+      sampling_disabled: "Claude není pro tenhle účet dostupný.",
+      rate_limited: "Limit využití Claude je vyčerpaný nebo běží moc dotazů najednou. Zkus to později.",
+      session_expired: "Přihlášení vypršelo. Přihlas se do Claude znovu a obnov stránku.",
+      prompt_too_large: "Materiály jsou moc dlouhé. Rozděl je do víc témat.",
+      image_rejected: "Obrázek se nepodařilo zpracovat. Zkus jiný soubor (JPG nebo PNG).",
+      images_unavailable: "V tomhle zobrazení nejde posílat obrázky. Vlož text nebo textové PDF.",
+      refused: "AI tenhle požadavek odmítla. Zkus ho přeformulovat.",
+      empty_completion: "AI nic nevrátila. Zkus to znovu nebo požadavek zjednoduš.",
+      cancelled: "Zrušeno.",
+    };
+    if (err?.code && messages[err.code]) return messages[err.code];
+    if (err?.code) return "Spojení s AI selhalo. Zkus to znovu.";
+    console.error(err);
+    return "Něco se pokazilo: " + (err?.message || "neznámá chyba");
+  }
+
+  async function ask(input, options = {}) {
+    if (!sample) throw new UserError("AI tu není dostupná. Otevři stránku přihlášený v Claude.");
+    const size = typeof input === "string" ? bytes(input) : input.reduce((n, m) => n + bytes(m.content), 0);
+    if (limits.maxPromptBytes && size > limits.maxPromptBytes) throw new UserError("Materiály jsou moc dlouhé. Rozděl je do víc témat.");
+    const out = await sample(input, options.tools ? options : { cache: false, ...options });
+    return out;
+  }
+
+  const LANG_RULE = "Write in the language of the materials (Czech unless they are clearly in another language; for foreign-language subjects keep the studied language for the vocabulary/examples and explain in Czech).";
+  const TUTOR = `You are an expert tutor preparing a school student for a test, working only from the student's own uploaded materials. Cover everything in the materials that could be tested; do not invent facts beyond them, though you may correct clear errors and fill a gap that is needed for the rest to make sense. ${LANG_RULE}`;
+  const NOTES_FORMAT = "Notes format: Markdown. Use ## and ### headings, short bullet points, numbered steps for procedures, and tables for comparisons. Mark the terms, definitions, dates, and formulas most likely to be tested with ==double equals highlights== (sparingly, so they stand out). Write formulas in LaTeX: $...$ inline, $$...$$ on a separate line. No top-level # heading.";
+  const QUESTION_RULES = `Question types:
+- "choice": 4 options, exactly one correct. Wrong options must be plausible. Vary the position of the correct option.
+- "truefalse": a statement that is either true or false.
+- "open": a question answered in one to three sentences or a short calculation, with a model answer.
+Every question has an explanation that says briefly why the right answer is right, so the student learns from a mistake.`;
+
+  const materialsBlock = (sources) => sources.map((s) => `<material name=${JSON.stringify(s.name)}>\n${s.text}\n</material>`).join("\n\n");
+  const genPrompt = (sources, task, extra) =>
+    `${TUTOR}\n\nThe student's materials:\n\n${materialsBlock(sources)}\n\n---\n\n${task}${extra ? `\n\nThe student's extra instructions: ${extra}` : ""}`;
+
+  async function generateNotes(sources, extra) {
+    const { text, truncated } = await ask(genPrompt(sources,
+      `Write study notes (výpisky) from the materials: everything needed for the test, organized so it is easy to learn, far shorter than the source but with nothing testable left out. End with a short "Shrnutí" section of the handful of points to remember, and add a memory aid where one genuinely helps.\n\n${NOTES_FORMAT}\n\nOutput format: the first line is "TITLE: " followed by a short topic title (at most 6 words) naming what the materials cover. Then a blank line, then the notes. Nothing else, no preface and no closing remark.`,
+      extra));
+    if (truncated) throw new UserError("Výpisky vyšly moc dlouhé. Rozděl materiál do víc témat.");
+    const match = text.match(/^\s*TITLE:\s*(.+)\n/);
+    return { title: match ? match[1].trim().replace(/^["„]|["“]$/g, "") : "", markdown: (match ? text.slice(match[0].length) : text).trim() };
+  }
+
+  const makeCard = (c) => ({ id: newId(6), front: str(c.front, 5000), back: str(c.back, 5000), box: 0, due: 0 });
+
+  // Kartičky a otázky se nechávají psát jako prostý text (ne JSON), aby se nerozbily vzorce se zpětnými lomítky.
+  function parseFields(block, labels) {
+    const out = {};
+    let key = null;
+    for (const line of block.split("\n")) {
+      const m = line.match(labels);
+      if (m) { key = m[1].toUpperCase(); out[key] = m[2]; }
+      else if (key) out[key] += "\n" + line;
+    }
+    for (const k of Object.keys(out)) out[k] = out[k].trim();
+    return out;
+  }
+
+  async function generateFlashcards(sources, extra) {
+    const { text } = await ask(genPrompt(sources,
+      `Create flashcards covering all the testable knowledge in the materials: terms and definitions, facts, dates, formulas, causes and effects, procedures. One fact per card. The front is a specific question or prompt; the back is the shortest complete answer. Make as many cards as the content needs (usually 15 to 40). Inline LaTeX ($...$) is allowed for formulas.\n\nOutput format, one card after another separated by a blank line, and nothing else:\nQ: the front\nA: the back`,
+      extra));
+    const cards = text.split(/\n(?=Q:)/).map((b) => parseFields(b, /^(Q|A):\s*(.*)$/i)).filter((f) => f.Q && f.A).map((f) => makeCard({ front: f.Q, back: f.A }));
+    if (!cards.length) throw new UserError("AI vrátila kartičky v nečitelné podobě. Zkus to znovu.");
+    return cards;
+  }
+
+  function makeQuestion(q) {
+    const base = { id: newId(6), type: q.type, question: str(q.question, 5000), explanation: str(q.explanation, 5000) };
+    if (!base.question) return null;
+    if (q.type === "truefalse") return { ...base, options: ["Pravda", "Nepravda"], correct: Number(q.correct_index) === 1 ? 1 : 0 };
+    if (q.type === "choice") {
+      const options = (Array.isArray(q.options) ? q.options : []).map((o) => str(o, 2000)).filter(Boolean);
+      if (options.length >= 2) {
+        const ci = Number(q.correct_index);
+        return { ...base, options, correct: Number.isInteger(ci) && ci >= 0 && ci < options.length ? ci : 0 };
+      }
+    }
+    const answer = str(q.answer, 5000);
+    return answer ? { ...base, type: "open", answer } : null;
+  }
+
+  const QUIZ_FORMAT = `Output format, one question block after another separated by a blank line, and nothing else:
+
+[choice]
+Q: the question
+A) option
+B) option
+C) option
+D) option
+CORRECT: the letter of the correct option
+WHY: explanation
+
+[truefalse]
+Q: the statement
+CORRECT: true or false
+WHY: explanation
+
+[open]
+Q: the question
+ANSWER: the model answer
+WHY: explanation`;
+
+  function parseQuiz(text) {
+    const parts = text.split(/^\[(choice|truefalse|open)\][ \t]*$/im);
+    const out = [];
+    for (let i = 1; i < parts.length; i += 2) {
+      const type = parts[i].toLowerCase();
+      const body = parts[i + 1] || "";
+      const f = parseFields(body, /^(Q|CORRECT|WHY|ANSWER):\s*(.*)$/i);
+      const q = { type, question: f.Q, explanation: f.WHY, answer: f.ANSWER };
+      if (type === "choice") {
+        const opts = [...body.matchAll(/^([A-H])\)\s*(.+)$/gm)];
+        q.options = opts.map((m) => m[2]);
+        q.correct_index = opts.findIndex((m) => m[1] === (f.CORRECT || "").trim().charAt(0).toUpperCase());
+        // otázka nesmí „spolknout“ řádky s možnostmi
+        q.question = (f.Q || "").split(/\n[A-H]\)\s/)[0];
+        if (q.correct_index < 0) continue;
+      }
+      if (type === "truefalse") q.correct_index = /^(true|pravda|ano)/i.test(f.CORRECT || "") ? 0 : 1;
+      const made = makeQuestion(q);
+      if (made) out.push(made);
+    }
+    return out;
+  }
+
+  async function generateQuiz(sources, extra) {
+    const { text } = await ask(genPrompt(sources,
+      `Create a practice test that checks real understanding of the materials, the way a teacher would test it: mostly "choice" questions, some "truefalse", and a few "open" ones. Mix easy recall with questions that require applying or connecting the knowledge. Usually 12 to 20 questions, more for long materials.\n\n${QUESTION_RULES}\n\n${QUIZ_FORMAT}`,
+      extra));
+    const quiz = parseQuiz(text);
+    if (!quiz.length) throw new UserError("AI vrátila test v nečitelné podobě. Zkus to znovu.");
+    return quiz;
+  }
+
+  async function gradeOpenAnswer(question, answer) {
+    const { text } = await ask(`You grade a student's answer to a practice test question. Judge the substance, not the wording or spelling: "correct" if the key points of the model answer are there, "partial" if some are missing or partly wrong, "wrong" otherwise.\n\nOutput format: the first line is "VERDICT: " followed by correct, partial or wrong. Then one to three sentences of feedback addressed to the student in the language of the question (Czech by default): what was right, what was missing, and the correct answer if they missed it. Nothing else.\n\nQuestion: ${question.question}\n\nModel answer: ${question.answer}\n\nStudent's answer: ${answer}`);
+    const m = text.match(/VERDICT:\s*(correct|partial|wrong)/i);
+    return { verdict: m ? m[1].toLowerCase() : "wrong", feedback: text.replace(/^.*VERDICT:.*\n?/i, "").trim() };
+  }
+
+  const TRANSCRIBE = "You convert a student's uploaded study material (photos of handwritten or printed notes, slides, textbook or PDF pages) into clean text so it can be studied later without the original file.\n\nTranscribe everything in the attached image(s) faithfully and completely, in the original language, in page order. Do not summarize, skip, or add knowledge that is not in the material. Fix obvious OCR-level slips only when you are sure. Keep the structure with Markdown headings and lists. Write formulas in LaTeX ($...$ inline, $$...$$ on their own line). For diagrams, charts, maps, and pictures, write a short description of what they show in square brackets, including every label and value. If a part is illegible, mark it [nečitelné]. Output only the transcription, with no preface.";
+
+  async function transcribe(file) {
+    const per = Math.max(1, Math.min(limits.images?.maxCount || 1, 4));
+    const parts = [];
+    for (let i = 0; i < file.blobs.length; i += per) {
+      const { text } = await ask(`${TRANSCRIBE}\n\nFile name: ${file.name}`, { images: file.blobs.slice(i, i + per) });
+      parts.push(text.trim());
+    }
+    const text = parts.join("\n\n").trim();
+    if (!text) throw new UserError(`Ze souboru „${file.name}“ se nepodařilo přečíst žádný text.`);
+    return text;
+  }
+
+  // ---------- příjem souborů ----------
+  async function readPdf(file) {
+    if (!window.pdfjsLib) throw new UserError("Čtečka PDF se nenačetla. Obnov stránku, nebo vlož text ručně.");
+    let pdf;
+    try {
+      pdf = await pdfjsLib.getDocument({ data: new Uint8Array(await file.blob.arrayBuffer()) }).promise;
+    } catch {
+      throw new UserError(`PDF „${file.name}“ se nepodařilo otevřít.`);
+    }
+    const pages = [];
+    for (let n = 1; n <= pdf.numPages; n++) {
+      const content = await (await pdf.getPage(n)).getTextContent();
+      let text = "";
+      for (const item of content.items) text += item.str + (item.hasEOL ? "\n" : " ");
+      pages.push(text.replace(/[ \t]+/g, " ").trim());
+    }
+    const text = pages.join("\n\n").trim();
+    if (text.length >= pdf.numPages * 150) return { text };
+
+    // Naskenované PDF bez textové vrstvy: stránky se vykreslí a přečte je AI jako obrázky.
+    if (!limits.images) throw new UserError(`PDF „${file.name}“ je naskenované a obrázky tu AI číst nemůže. Vlož text ručně.`);
+    if (pdf.numPages > 30) throw new UserError(`Naskenované PDF „${file.name}“ má přes 30 stran. Rozděl ho na menší části.`);
+    const blobs = [];
+    for (let n = 1; n <= pdf.numPages; n++) {
+      const page = await pdf.getPage(n);
+      const base = page.getViewport({ scale: 1 });
+      const viewport = page.getViewport({ scale: Math.min(2, 1400 / base.width) });
+      const canvas = document.createElement("canvas");
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      blobs.push(await new Promise((r) => canvas.toBlob(r, "image/jpeg", 0.85)));
+    }
+    return { blobs };
+  }
+
+  async function intake(body) {
+    const ready = [];
+    const todo = [];
+    const pasted = String(body.text || "").trim();
+    if (pasted) ready.push({ id: newId(6), name: "Vložený text", kind: "text", text: pasted });
+
+    for (const f of body.files || []) {
+      const name = str(f.name, 120) || "soubor";
+      const ext = name.toLowerCase().split(".").pop();
+      if (f.type === "application/pdf" || ext === "pdf") {
+        const out = await readPdf({ ...f, name });
+        if (out.text) ready.push({ id: newId(6), name, kind: "pdf", text: out.text });
+        else todo.push({ name, kind: "pdf", blobs: out.blobs });
+      } else if (f.type.startsWith("image/")) {
+        if (!limits.images) throw new UserError("V tomhle zobrazení nejde posílat AI obrázky. Vlož text nebo textové PDF.");
+        todo.push({ name, kind: "image", blobs: [f.blob] });
+      } else if (ext === "docx") {
+        if (!window.mammoth) throw new UserError("Čtečka Wordu se nenačetla. Obnov stránku, nebo ulož soubor jako PDF.");
+        const { value } = await mammoth.extractRawText({ arrayBuffer: await f.blob.arrayBuffer() });
+        if (value.trim()) ready.push({ id: newId(6), name, kind: "docx", text: value.trim() });
+      } else if (f.type.startsWith("text/") || ["txt", "md", "markdown", "csv", "tex"].includes(ext)) {
+        const text = (await f.blob.text()).trim();
+        if (text) ready.push({ id: newId(6), name, kind: "text", text });
+      } else {
+        throw new UserError(`Soubor „${name}“ neumím přečíst. Podporuji PDF, fotky, Word (.docx) a text.`);
+      }
+    }
+    if (!ready.length && !todo.length) throw new UserError("Nahraj soubor nebo vlož text.");
+    return { ready, todo };
+  }
+
+  const PARTS = ["notes", "flashcards", "quiz"];
+  const sourceChars = (t) => t.sources.reduce((n, s) => n + s.text.length, 0);
+
+  async function processTopic(t, { todo = [], parts = PARTS, extra = "" }, send) {
+    const progress = { read: todo.length ? "run" : "done", notes: "wait", flashcards: "wait", quiz: "wait" };
+    for (const p of PARTS) if (!parts.includes(p)) progress[p] = "skip";
+    running.set(t.id, progress);
+    const step = (key, state) => { progress[key] = state; send({ type: "progress", progress: { ...progress } }); };
+    const errors = [];
+    t.error = null;
+    send({ type: "progress", progress: { ...progress } });
+
+    try {
+      // 1) fotky a naskenované stránky přepíše AI (po jednom souboru, ať se nevyčerpají souběžné dotazy)
+      for (const f of todo) {
+        try { t.sources.push({ id: newId(6), name: f.name, kind: f.kind, text: await transcribe(f) }); }
+        catch (err) { errors.push(aiError(err)); }
+      }
+      if (!t.sources.length) throw new UserError(errors[0] || "Z materiálů se nepodařilo nic přečíst.");
+      if (sourceChars(t) > MAX_SOURCE_CHARS) throw new UserError(`Materiály jsou moc dlouhé (${sourceChars(t).toLocaleString("cs-CZ")} znaků, limit je ${MAX_SOURCE_CHARS.toLocaleString("cs-CZ")}). Rozděl je do víc témat.`);
+      await saveSources(t);
+      await saveTopic(t); // téma existuje hned, i kdyby se stránka během generování zavřela
+      step("read", "done");
+
+      // 2) výpisky, kartičky a test souběžně
+      const jobs = {
+        notes: async () => { const out = await generateNotes(t.sources, extra); t.notes = out.markdown; if (!t.title) t.title = out.title.slice(0, 120); },
+        flashcards: async () => { t.flashcards = await generateFlashcards(t.sources, extra); },
+        quiz: async () => { t.quiz = await generateQuiz(t.sources, extra); },
+      };
+      await Promise.all(parts.map(async (part) => {
+        step(part, "run");
+        try { await jobs[part](); step(part, "done"); }
+        catch (err) { errors.push(aiError(err)); step(part, "error"); }
+      }));
+    } catch (err) {
+      errors.unshift(aiError(err));
+    }
+
+    if (!t.title) t.title = "Nové téma";
+    t.error = errors.length ? [...new Set(errors)].join(" ") : null;
+    running.delete(t.id);
+    try { await saveTopic(t); } catch (err) { t.error = [t.error, aiError(err)].filter(Boolean).join(" "); }
+    send({ type: "done", topic: forClient(t) });
+  }
+
+  // ---------- chat ----------
+  const CHAT_SYSTEM = `You are the AI tutor inside a study app. A school student has uploaded their own notes for one topic and is preparing for a test. The app generated study notes (výpisky), flashcards, and a practice test from those materials; the student sees them next to this chat.
+
+Explaining: when the student asks about something, explain it from the very beginning, assuming they do not understand it yet. Start with the plain-language idea, then build up step by step to what the materials say, defining each term the first time it appears and using a concrete everyday example or analogy. Tie the explanation back to how it could be asked on the test. Ground your answers in the student's materials; you may add general knowledge when it helps understanding, and say so when you go beyond what the materials contain, because the teacher's version is what will be tested. If the materials are wrong about something, tell the student. Keep answers as long as understanding needs and no longer; the student can always ask you to go deeper. When it would help, finish with one short question that checks whether they got it.
+
+Notes format: Markdown with ## and ### headings; ==text== renders as a highlight; LaTeX formulas go in $...$ or $$...$$.
+
+Style: reply in the language the student writes in (Czech by default), in a friendly, direct tone, like a good older classmate. Use Markdown, and LaTeX in $...$ for formulas.`;
+
+  const EDITING = `Editing: you can change the notes, flashcards, and test with your tools, and you should do so whenever the student asks (shorten or expand the notes, highlight things, rewrite a section more simply, add, fix or delete flashcards, make the test harder, add questions on a subtopic, and so on). Make the change right away rather than describing what you would do; ask first only when the request is truly ambiguous. For small or local changes to the notes use edit_notes, and use replace_notes only for a rewrite of most of the text. After a change, tell the student in a sentence what you changed. The current state of everything is given below.
+
+${QUESTION_RULES}
+In tool input, a question is {type, question, options, correct_index, answer, explanation}: for "choice" give options and the 0-based correct_index; for "truefalse" correct_index is 0 if the statement is true and 1 if false; for "open" give the model answer in "answer".`;
+
+  const NO_EDITING = "You cannot edit the notes, flashcards, or test in this view; if the student asks for a change, give them the new text in your reply so they can paste it in by hand.";
+
+  const cardSchema = { type: "object", properties: { front: { type: "string" }, back: { type: "string" } }, required: ["front", "back"] };
+  const questionProps = { type: { type: "string", enum: ["choice", "truefalse", "open"] }, question: { type: "string" }, options: { type: "array", items: { type: "string" } }, correct_index: { type: "integer" }, answer: { type: "string" }, explanation: { type: "string" } };
+  const withId = (schema) => ({ ...schema, properties: { id: { type: "string" }, ...schema.properties }, required: ["id", ...schema.required] });
+  const questionSchema = { type: "object", properties: questionProps, required: ["type", "question", "explanation"] };
+  const list = (v) => (Array.isArray(v) ? v : []);
+
+  function chatTools(t, on) {
+    const did = (label) => { on.action(label); return label; };
+    return [
+      {
+        name: "edit_notes",
+        description: "Make targeted edits to the study notes by exact string replacement. Each `find` must match the current notes text exactly (including Markdown) and be long enough to be unique; only its first occurrence is replaced. Use for highlighting (wrap text in ==...==), fixing or rewording a passage, inserting or deleting a section. Returns how many edits applied.",
+        inputSchema: { type: "object", properties: { edits: { type: "array", items: { type: "object", properties: { find: { type: "string" }, replace: { type: "string" } }, required: ["find", "replace"] } } }, required: ["edits"] },
+        execute(input) {
+          const edits = list(input.edits).filter((e) => e && typeof e.find === "string" && e.find);
+          if (!edits.length) throw new Error("No edits given.");
+          const missed = [];
+          for (const e of edits) {
+            if (t.notes.includes(e.find)) t.notes = t.notes.replace(e.find, () => String(e.replace ?? ""));
+            else missed.push(e.find.slice(0, 80));
+          }
+          if (missed.length < edits.length) did("Výpisky upraveny");
+          return missed.length ? `Applied ${edits.length - missed.length} of ${edits.length} edits. Not found (text must match the notes exactly): ${JSON.stringify(missed)}` : `Applied all ${edits.length} edits.`;
+        },
+      },
+      {
+        name: "replace_notes",
+        description: "Replace the entire study notes with new Markdown. Use when most of the text changes (shortening everything, restructuring). Returns a confirmation.",
+        inputSchema: { type: "object", properties: { markdown: { type: "string" } }, required: ["markdown"] },
+        execute(input) {
+          const markdown = String(input.markdown || "").trim();
+          if (!markdown) throw new Error("Empty notes.");
+          t.notes = markdown;
+          did("Výpisky přepsány");
+          return "Notes replaced.";
+        },
+      },
+      {
+        name: "change_flashcards",
+        description: "Change the flashcard deck: `add` new cards, `update` existing cards by id, `delete` cards by id. Set `replace_all` to true to discard the whole deck first and keep only the cards in `add` (resets learning progress; only when the student wants the deck redone). Returns what was changed and the ids of added cards.",
+        inputSchema: { type: "object", properties: { add: { type: "array", items: cardSchema }, update: { type: "array", items: withId(cardSchema) }, delete: { type: "array", items: { type: "string" } }, replace_all: { type: "boolean" } } },
+        execute(input) {
+          const add = list(input.add).filter((c) => c && str(c.front, 5000) && str(c.back, 5000)).map(makeCard);
+          const out = [];
+          if (input.replace_all === true) {
+            if (!add.length) throw new Error("replace_all needs cards in `add`.");
+            t.flashcards = [];
+            out.push("Deck cleared.");
+          }
+          const del = list(input.delete).map(String);
+          if (del.length) { const before = t.flashcards.length; t.flashcards = t.flashcards.filter((c) => !del.includes(c.id)); out.push(`Deleted ${before - t.flashcards.length}.`); }
+          let updated = 0;
+          for (const c of list(input.update)) {
+            const card = t.flashcards.find((x) => x.id === String(c?.id));
+            if (card && str(c.front, 5000) && str(c.back, 5000)) { card.front = str(c.front, 5000); card.back = str(c.back, 5000); updated++; }
+          }
+          if (list(input.update).length) out.push(`Updated ${updated} of ${list(input.update).length}.`);
+          if (add.length) { t.flashcards.push(...add); out.push(`Added ${add.length} cards with ids ${add.map((c) => c.id).join(", ")}.`); }
+          if (!out.length) throw new Error("Nothing to change.");
+          did(input.replace_all === true ? "Kartičky vytvořeny znovu" : "Kartičky upraveny");
+          return out.join(" ");
+        },
+      },
+      {
+        name: "change_quiz",
+        description: "Change the practice test: `add` new questions, `update` existing questions by id (give the complete new question), `delete` questions by id. Set `replace_all` to true to discard the whole test first and keep only the questions in `add`. Returns what was changed and the ids of added questions.",
+        inputSchema: { type: "object", properties: { add: { type: "array", items: questionSchema }, update: { type: "array", items: withId(questionSchema) }, delete: { type: "array", items: { type: "string" } }, replace_all: { type: "boolean" } } },
+        execute(input) {
+          const add = list(input.add).map((q) => q && makeQuestion(q)).filter(Boolean);
+          const out = [];
+          if (input.replace_all === true) {
+            if (!add.length) throw new Error("replace_all needs questions in `add`.");
+            t.quiz = [];
+            out.push("Test cleared.");
+          }
+          const del = list(input.delete).map(String);
+          if (del.length) { const before = t.quiz.length; t.quiz = t.quiz.filter((q) => !del.includes(q.id)); out.push(`Deleted ${before - t.quiz.length}.`); }
+          let updated = 0;
+          for (const q of list(input.update)) {
+            const i = t.quiz.findIndex((x) => x.id === String(q?.id));
+            const made = i >= 0 && makeQuestion(q);
+            if (made) { t.quiz[i] = { ...made, id: t.quiz[i].id }; updated++; }
+          }
+          if (list(input.update).length) out.push(`Updated ${updated} of ${list(input.update).length}.`);
+          if (add.length) { t.quiz.push(...add); out.push(`Added ${add.length} questions with ids ${add.map((q) => q.id).join(", ")}.`); }
+          if (!out.length) throw new Error("Nothing to change.");
+          did(input.replace_all === true ? "Test vytvořen znovu" : "Test upraven");
+          return out.join(" ");
+        },
+      },
+    ];
+  }
+
+  function stateBlock(t) {
+    const cards = t.flashcards.map(({ id, front, back }) => ({ id, front, back }));
+    const quiz = t.quiz.map((q) => q.type === "open"
+      ? { id: q.id, type: q.type, question: q.question, answer: q.answer, explanation: q.explanation }
+      : { id: q.id, type: q.type, question: q.question, options: q.options, correct_index: q.correct, explanation: q.explanation });
+    return `Topic: ${t.title}\n\n<notes>\n${t.notes || "(empty)"}\n</notes>\n\n<flashcards>\n${JSON.stringify(cards)}\n</flashcards>\n\n<quiz>\n${JSON.stringify(quiz)}\n</quiz>`;
+  }
+
+  async function chat(t, userText, send) {
+    const canEdit = Boolean(limits.tools);
+    const actions = [];
+    const on = { action: (label) => { if (!actions.includes(label)) actions.push(label); send({ type: "action", label }); } };
+    let tools = canEdit ? chatTools(t, on) : undefined;
+    if (tools && limits.tools.maxCount < tools.length) tools = tools.slice(0, limits.tools.maxCount);
+    // Po každém zásahu nástroje se změna hned ukáže na stránce.
+    for (const tool of tools || []) {
+      const run = tool.execute;
+      tool.execute = (input) => { const result = run(input || {}); send({ type: "topic", topic: forClient(t) }); return result; };
+    }
+
+    const history = t.chat.slice(-24).map((m) => ({ role: m.role, content: m.text || (m.actions?.length ? `(${m.actions.join(", ")})` : "(bez textu)") }));
+    while (history.length && history[0].role !== "user") history.shift();
+    // Stránka nemá vlastní systémový prompt, takže zadání i materiály jdou jako první zpráva.
+    const brief = `${CHAT_SYSTEM}\n\n${canEdit ? EDITING : NO_EDITING}\n\nThe student's original materials:\n\n${materialsBlock(t.sources)}\n\nCurrent state of the topic:\n\n${stateBlock(t)}\n\nThe conversation with the student follows.`;
+    const input = [{ role: "user", content: brief }, { role: "assistant", content: "Rozumím, jsem připravený." }, ...history, { role: "user", content: userText }];
+
+    let text = "";
+    const options = { onText: (u) => { text = u.text; send({ type: "reset", text }); } };
+    if (tools) options.tools = tools; else options.cache = false;
+    try {
+      const out = await ask(input, options);
+      text = out.text;
+    } catch (err) {
+      // Co nástroje stihly změnit, zůstává; uloží se i při chybě.
+      if (actions.length) await saveTopic(t).catch(() => {});
+      throw Object.assign(err, { partial: err?.code === "refused" ? "" : text });
+    }
+    t.chat.push({ role: "user", text: userText }, { role: "assistant", text: text.trim(), actions });
+    await saveTopic(t);
+  }
+
+  // ---------- „HTTP“ rozhraní pro app.js ----------
+  const DAY = 86400000;
+  const INTERVALS = [0, 1, 3, 7, 16, 35, 90];
+  const notBusy = (t) => { if (running.has(t.id)) throw new UserError("Téma se právě zpracovává, chvilku vydrž."); };
+
+  async function api(method, url, body = {}) {
+    const [, a, id, b, sub] = url.split("/"); // "/topics/ID/sources/SID"
+    const key = `${method} ${a}${id ? "/:id" : ""}${b ? "/" + b : ""}`;
+    switch (key) {
+      case "GET state": return stateForClient();
+      case "POST subjects": {
+        const name = str(body.name, 60);
+        if (!name) throw new UserError("Zadej název předmětu.");
+        const subject = { id: newId(), name, emoji: str(body.emoji, 8) || "📘", color: str(body.color, 20) || "#7c5cff" };
+        index.subjects.push(subject);
+        await saveIndex();
+        return subject;
+      }
+      case "PATCH subjects/:id": {
+        const s = need(index.subjects.find((x) => x.id === id));
+        s.name = str(body.name, 60) || s.name;
+        s.emoji = str(body.emoji, 8) || s.emoji;
+        s.color = str(body.color, 20) || s.color;
+        await saveIndex();
+        return s;
+      }
+      case "DELETE subjects/:id": {
+        const gone = index.topics.filter((t) => t.subjectId === id).map((t) => t.id);
+        index.topics = index.topics.filter((t) => t.subjectId !== id);
+        index.subjects = index.subjects.filter((s) => s.id !== id);
+        await saveIndex();
+        for (const tid of gone) { topics.delete(tid); col.doc("t_" + tid).delete().catch(() => {}); col.doc("s_" + tid).delete().catch(() => {}); }
+        return { ok: true };
+      }
+      case "GET topics/:id": return forClient(await getTopic(id));
+      case "PATCH topics/:id": {
+        const t = await getTopic(id);
+        if (body.title !== undefined) t.title = str(body.title, 120) || t.title;
+        if (body.testDate !== undefined) t.testDate = str(body.testDate, 10) || null;
+        if (typeof body.notes === "string") t.notes = body.notes;
+        if (Array.isArray(body.flashcards)) {
+          t.flashcards = body.flashcards.filter((c) => str(c.front, 5000) && str(c.back, 5000)).map((c) => {
+            const old = t.flashcards.find((x) => x.id === c.id);
+            return { id: old?.id || newId(6), front: str(c.front, 5000), back: str(c.back, 5000), box: old?.box || 0, due: old?.due || 0 };
+          });
+        }
+        if (Array.isArray(body.deleteQuestions)) t.quiz = t.quiz.filter((q) => !body.deleteQuestions.includes(q.id));
+        await saveTopic(t);
+        return forClient(t);
+      }
+      case "DELETE topics/:id": {
+        index.topics = index.topics.filter((t) => t.id !== id);
+        topics.delete(id);
+        await saveIndex();
+        col.doc("t_" + id).delete().catch(() => {});
+        col.doc("s_" + id).delete().catch(() => {});
+        return { ok: true };
+      }
+      case "DELETE topics/:id/sources": {
+        const t = await getTopic(id);
+        t.sources = t.sources.filter((s) => s.id !== sub);
+        await saveSources(t);
+        return forClient(t);
+      }
+      case "DELETE topics/:id/chat": {
+        const t = await getTopic(id);
+        t.chat = [];
+        await saveTopic(t);
+        return { ok: true };
+      }
+      case "POST topics/:id/review": {
+        const t = await getTopic(id);
+        const card = need(t.flashcards.find((c) => c.id === body.cardId), "Kartička neexistuje.");
+        card.box = body.known ? Math.min((card.box || 0) + 1, INTERVALS.length - 1) : 0;
+        card.due = body.known ? Date.now() + INTERVALS[card.box] * DAY : 0;
+        saveTopic(t).catch((err) => console.error(err));
+        return { card: { ...card }, due: dueCount(t) };
+      }
+      case "POST topics/:id/grade": {
+        const t = await getTopic(id);
+        const q = need(t.quiz.find((x) => x.id === body.questionId && x.type === "open"), "Otázka neexistuje.");
+        const answer = str(body.answer, 4000);
+        if (!answer) return { verdict: "wrong", feedback: "Bez odpovědi. Správně: " + q.answer };
+        try { return await gradeOpenAnswer(q, answer); } catch (err) { throw new UserError(aiError(err)); }
+      }
+      case "POST topics/:id/attempts": {
+        const t = await getTopic(id);
+        t.attempts.push({ at: Date.now(), score: Number(body.score), total: Number(body.total), wrong: (body.wrong || []).slice(0, 200).map(String) });
+        t.attempts = t.attempts.slice(-30);
+        await saveTopic(t);
+        return forClient(t);
+      }
+    }
+    throw new UserError("Neznámá akce.");
+  }
+
+  async function stream(url, body, send) {
+    const [, , id, action] = url.split("/");
+    if (!id) { // POST /topics
+      need(index.subjects.find((s) => s.id === body.subjectId), "Předmět neexistuje.");
+      const { ready, todo } = await intake(body);
+      const t = { id: newId(), subjectId: body.subjectId, title: str(body.title, 120), testDate: str(body.testDate, 10) || null, createdAt: Date.now(), error: null, sources: ready, notes: "", flashcards: [], quiz: [], attempts: [], chat: [] };
+      topics.set(t.id, t);
+      running.set(t.id, {});
+      index.topics.push(summary(t));
+      send({ type: "created", id: t.id });
+      return processTopic(t, { todo, extra: str(body.instructions, 2000) }, send);
+    }
+    const t = await getTopic(id);
+    notBusy(t);
+    if (action === "sources") {
+      const { ready, todo } = await intake(body);
+      t.sources.push(...ready);
+      return processTopic(t, { todo, parts: body.regenerate ? PARTS : [] }, send);
+    }
+    if (action === "generate") {
+      if (!t.sources.length) throw new UserError("Téma nemá žádné materiály.");
+      return processTopic(t, { parts: PARTS.filter((p) => (body.parts || PARTS).includes(p)), extra: str(body.instructions, 2000) }, send);
+    }
+    if (action === "chat") {
+      const text = str(body.message, 8000);
+      if (!text) throw new UserError("Napiš zprávu.");
+      if (chatting.has(id)) throw new UserError("AI ještě odpovídá na předchozí zprávu.");
+      chatting.add(id);
+      try {
+        await chat(t, text, send);
+        send({ type: "done", topic: forClient(t) });
+      } catch (err) {
+        if (typeof err.partial === "string") send({ type: "reset", text: err.partial });
+        send({ type: "error", message: aiError(err), topic: forClient(t) });
+      } finally {
+        chatting.delete(id);
+      }
+      return;
+    }
+    throw new UserError("Neznámá akce.");
+  }
+
+  async function boot() {
+    if (!window.claude?.use) throw new Error("Tahle stránka funguje jen otevřená v Claude (claude.ai).");
+    const [d, user, s] = await Promise.all(["db", "user", "sample"].map((n) => window.claude.use(n)));
+    if (!d || !user) throw new Error("Nepodařilo se připojit k úložišti. Otevři stránku přihlášený v Claude a zkus to znovu.");
+    const uid = await user.id();
+    if (!uid) throw new Error("Nepodařilo se zjistit, kdo je přihlášený. Přihlas se do Claude a obnov stránku.");
+    db = d;
+    sample = s;
+    col = db.collection("data/users/" + uid);
+    limits = sample ? await sample.limits().catch(() => ({})) : {};
+    const snap = await withTimeout(col.doc("index").get(), 15000, "Načítání dat trvá moc dlouho. Zkus to znovu.");
+    if (snap.exists) index = { subjects: [], topics: [], ...clone(snap.data()) };
+    if (window.pdfjsLib && window.pdfjsWorker) pdfjsLib.GlobalWorkerOptions.workerSrc = "about:blank"; // běží v hlavním vlákně
+    return { needsPassword: false, aiReady: Boolean(sample), model: "", local: true };
+  }
+
+  const wrap = (fn) => async (...args) => {
+    try { return await fn(...args); }
+    catch (err) { throw err instanceof UserError ? err : new Error(err?.code ? aiError(err) : err?.message || "Něco se pokazilo."); }
+  };
+  return { boot, api: wrap(api), stream: wrap(stream) };
+})();
+
+</script>
+<script>
+/* Studovna – frontend bez build kroku. Stav v objektu S, překreslování přes render(). */
+"use strict";
+
+const $ = (sel, el = document) => el.querySelector(sel);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = {
+  get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
+  set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch { /* soukromé okno */ } },
+};
+
+// Verze bez serveru (artifact v Claude): window.Backend nahrazuje HTTP API.
+const LOCAL = Boolean(window.Backend);
+
+const S = {
+  config: null,
+  profiles: [], subjects: [], topics: [],
+  profileId: store.get("profile"),
+  topic: null,        // plně načtené aktuální téma
+  streaming: null,    // id tématu, jehož zpracování právě sledujeme přes stream
+  notesEdit: false,
+  study: null,
+  quiz: null,
+  chatOpen: false,
+  sending: false,
+};
+
+const COLORS = ["#7c5cff", "#ff5c8a", "#ff8a3d", "#f2b900", "#17a673", "#12a5c9", "#3d7bff", "#8a8fa3"];
+const EMOJIS = ["📘", "🧮", "🧪", "🧬", "🌍", "📜", "⚛️", "💻", "🇬🇧", "🇩🇪", "✍️", "🎨", "🎵", "⚖️", "💰", "🏃", "🧠", "🔭", "📐", "🗣️"];
+
+// ---------- markdown + vzorce ----------
+function md(text, inline = false) {
+  const math = [];
+  const stash = (tex, display) => { math.push({ tex, display }); return `@@M${math.length - 1}@@`; };
+  let src = String(text ?? "")
+    .replace(/\$\$([\s\S]+?)\$\$/g, (m, t) => stash(t, true))
+    .replace(/\\\[([\s\S]+?)\\\]/g, (m, t) => stash(t, true))
+    .replace(/\\\((.+?)\\\)/g, (m, t) => stash(t, false))
+    .replace(/\$(?!\s)([^$\n]+?)(?<!\s)\$/g, (m, t) => stash(t, false))
+    .replace(/==(?=\S)([^\n]+?)(?<=\S)==/g, "<mark>$1</mark>");
+  let html = inline ? marked.parseInline(src, { gfm: true, breaks: true }) : marked.parse(src, { gfm: true, breaks: true });
+  html = DOMPurify.sanitize(html);
+  return html.replace(/@@M(\d+)@@/g, (m, i) => {
+    const { tex, display } = math[i];
+    try { return katex.renderToString(tex, { displayMode: display, throwOnError: false, output: LOCAL ? "mathml" : "htmlAndMathml" }); }
+    catch { return esc(tex); }
+  });
+}
+
+// ---------- API ----------
+const headers = () => ({ "Content-Type": "application/json", "x-app-password": store.get("password") || "" });
+
+async function api(method, url, body) {
+  if (LOCAL) return window.Backend.api(method, url, body);
+  let res;
+  try {
+    res = await fetch("/api" + url, { method, headers: headers(), body: body ? JSON.stringify(body) : undefined });
+  } catch {
+    throw new Error("Server neodpovídá. Zkontroluj připojení.");
+  }
+  if (res.status === 401) { store.set("password", null); renderLogin(); throw new Error("Přihlas se heslem."); }
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(out.error || "Něco se pokazilo.");
+  return out;
+}
+
+// POST, na který server odpovídá proudem událostí (průběh generování, text chatu).
+async function stream(url, body, onEvent) {
+  if (LOCAL) return window.Backend.stream(url, body, onEvent);
+  let res;
+  try {
+    res = await fetch("/api" + url, { method: "POST", headers: headers(), body: JSON.stringify(body) });
+  } catch {
+    throw new Error("Server neodpovídá. Zkontroluj připojení.");
+  }
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Něco se pokazilo.");
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let cut;
+    while ((cut = buffer.indexOf("\n\n")) >= 0) {
+      const chunk = buffer.slice(0, cut);
+      buffer = buffer.slice(cut + 2);
+      if (chunk.startsWith("data: ")) onEvent(JSON.parse(chunk.slice(6)));
+    }
+  }
+}
+
+async function refresh() {
+  Object.assign(S, await api("GET", "/state"));
+}
+
+// ---------- drobnosti UI ----------
+function toast(text, bad = false) {
+  const el = document.createElement("div");
+  el.className = "toast" + (bad ? " bad" : "");
+  el.textContent = text;
+  $("#toasts").append(el);
+  setTimeout(() => el.remove(), bad ? 6000 : 2600);
+}
+const fail = (err) => toast(err.message || String(err), true);
+
+function modal(html, onMount) {
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+  overlay.innerHTML = `<div class="modal card" role="dialog" aria-modal="true">${html}</div>`;
+  const close = () => overlay.remove();
+  overlay.addEventListener("mousedown", (e) => { if (e.target === overlay) close(); });
+  overlay.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+  overlay.addEventListener("click", (e) => { if (e.target.closest("[data-close]")) close(); });
+  $("#modals").append(overlay);
+  onMount?.(overlay, close);
+  (overlay.querySelector("[autofocus]") || overlay.querySelector("input, textarea, button"))?.focus();
+  return close;
+}
+
+function confirmBox(text, yes = "Smazat") {
+  return new Promise((resolve) => {
+    modal(`<h2>${esc(text)}</h2><div class="modal-foot"><button class="btn" data-close>Zrušit</button><button class="btn bad" data-yes>${esc(yes)}</button></div>`, (el, close) => {
+      el.querySelector("[data-yes]").onclick = () => { resolve(true); close(); };
+    });
+  });
+}
+
+// fields: [{name, label, value, type: text|textarea|date, placeholder, hint, optional}]
+function formBox(title, fields, submit = "Uložit") {
+  return new Promise((resolve) => {
+    const inputs = fields.map((f) => `
+      <label class="field"><span>${esc(f.label)} ${f.hint ? `<em>${esc(f.hint)}</em>` : ""}</span>
+      ${f.type === "textarea"
+        ? `<textarea class="input" name="${f.name}" placeholder="${esc(f.placeholder || "")}" rows="${f.rows || 4}">${esc(f.value || "")}</textarea>`
+        : `<input class="input" type="${f.type || "text"}" name="${f.name}" value="${esc(f.value || "")}" placeholder="${esc(f.placeholder || "")}" ${f.optional ? "" : "required"}>`}
+      </label>`).join("");
+    modal(`<form><h2>${esc(title)}</h2>${inputs}<div class="modal-foot"><button type="button" class="btn" data-close>Zrušit</button><button class="btn primary">${esc(submit)}</button></div></form>`, (el, close) => {
+      el.querySelector("form").onsubmit = (e) => {
+        e.preventDefault();
+        resolve(Object.fromEntries(new FormData(e.target)));
+        close();
+      };
+    });
+  });
+}
+
+const plural = (n, one, few, many) => `${n} ${n === 1 ? one : n >= 2 && n <= 4 ? few : many}`;
+const profile = () => S.profiles.find((p) => p.id === S.profileId);
+const initial = (name) => esc((name || "?").trim()[0].toUpperCase());
+const shuffle = (arr) => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+function testChip(date) {
+  if (!date) return "";
+  const days = Math.ceil((new Date(date + "T00:00") - new Date().setHours(0, 0, 0, 0)) / 86400000);
+  if (days < 0) return "";
+  const label = days === 0 ? "Test dnes!" : days === 1 ? "Test zítra" : `Test za ${plural(days, "den", "dny", "dní")}`;
+  return `<span class="chip ${days <= 2 ? "bad" : days <= 6 ? "warn" : ""}">📅 ${label}</span>`;
+}
+
+// ---------- směrování ----------
+// V artifactu se adresa stránky měnit nedá, takže si cestu držíme sami.
+let localHash = (LOCAL && store.get("route")) || "#/";
+const getHash = () => (LOCAL ? localHash : location.hash);
+const route = () => { const [view, id, tab] = getHash().replace(/^#\/?/, "").split("/"); return { view, id, tab }; };
+function onRoute() { S.study = null; S.quiz = null; S.notesEdit = false; S.chatOpen = false; render(); scrollTo(0, 0); }
+function go(hash, silent = false) {
+  if (LOCAL) { localHash = hash; store.set("route", hash); if (!silent) onRoute(); }
+  else if (silent) history.replaceState(null, "", hash);
+  else if (location.hash === hash) render();
+  else location.hash = hash;
+}
+addEventListener("hashchange", () => { if (!LOCAL) onRoute(); });
+
+function topbar(crumbs = "") {
+  const p = profile();
+  return `<header class="topbar">
+    <a class="logo" href="#/"><i>🎓</i><span>Studovna</span></a>
+    <nav class="crumbs">${crumbs}</nav>
+    <span class="spacer"></span>
+    ${LOCAL ? "" : `<button class="icon-btn" data-act="theme" title="Světlý / tmavý režim">🌓</button>`}
+    ${p && !LOCAL ? `<button class="avatar" style="background:${esc(p.color)}" data-act="switch-profile" title="Přepnout profil (${esc(p.name)})">${initial(p.name)}</button>` : ""}
+  </header>`;
+}
+const aiBanner = () => S.config.aiReady ? "" : LOCAL ? `<div class="banner bad">AI tu teď není dostupná. Otevři stránku přihlášený v Claude a povol jí používat Claude.</div>` : `<div class="banner bad">AI není připojená: na serveru chybí <b>ANTHROPIC_API_KEY</b>. Doplň ho do souboru <code>.env</code> a restartuj server.</div>`;
+
+async function render() {
+  const app = $("#app");
+  hideSelBar();
+  if (!profile()) return renderProfiles();
+  const r = route();
+  if (r.view === "t" && r.id) return renderTopicRoute(r);
+  if (r.view === "s" && r.id) {
+    const subject = S.subjects.find((s) => s.id === r.id && s.profileId === S.profileId);
+    if (subject) return (app.innerHTML = viewSubject(subject));
+  }
+  app.innerHTML = viewHome();
+}
+
+// ---------- přihlášení a profily ----------
+function renderLogin() {
+  $("#app").innerHTML = `<div class="center-screen"><form class="center-card card" style="padding:32px" id="login">
+    <div style="font-size:3rem">🎓</div><h1>Studovna</h1><p class="muted" style="margin-bottom:22px">Zadej heslo k aplikaci.</p>
+    <input class="input" type="password" name="password" placeholder="Heslo" autofocus required>
+    <button class="btn primary lg" style="width:100%;margin-top:14px">Vstoupit</button></form></div>`;
+  $("#login").onsubmit = async (e) => {
+    e.preventDefault();
+    const password = new FormData(e.target).get("password");
+    try {
+      const res = await fetch("/api/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password }) });
+      if (!res.ok) throw new Error("Špatné heslo.");
+      store.set("password", password);
+      await start();
+    } catch (err) { fail(err); }
+  };
+}
+
+function renderProfiles() {
+  $("#app").innerHTML = `<div class="center-screen"><div class="center-card">
+    <div style="font-size:3.4rem">🎓</div><h1>Kdo se bude učit?</h1>
+    <p class="muted">Každý má své předměty, kartičky a výsledky.</p>
+    <div class="profiles">
+      ${S.profiles.map((p) => `<button class="profile" data-act="pick-profile" data-id="${p.id}"><span class="avatar big" style="background:${esc(p.color)}">${initial(p.name)}</span>${esc(p.name)}</button>`).join("")}
+      <button class="profile" data-act="new-profile"><span class="avatar big add">+</span>Nový profil</button>
+    </div>
+    ${S.profiles.length ? `<button class="btn ghost sm danger" data-act="delete-profile">Smazat profil…</button>` : ""}
+  </div></div>`;
+}
+
+// ---------- domů a předmět ----------
+function viewHome() {
+  const subjects = S.subjects.filter((s) => s.profileId === S.profileId);
+  const ids = subjects.map((s) => s.id);
+  const mine = S.topics.filter((t) => ids.includes(t.subjectId));
+  const due = mine.reduce((n, t) => n + t.due, 0);
+  const cards = subjects.map((s) => {
+    const topics = mine.filter((t) => t.subjectId === s.id);
+    const d = topics.reduce((n, t) => n + t.due, 0);
+    return `<a class="card subject" style="--c:${esc(s.color)}" href="#/s/${s.id}">
+      <div class="emoji">${esc(s.emoji)}</div><h3>${esc(s.name)}</h3>
+      <div class="chips" style="margin-top:10px"><span class="chip">${plural(topics.length, "téma", "témata", "témat")}</span>${d ? `<span class="chip accent">🃏 ${d} k opakování</span>` : ""}</div>
+      <div class="card-menu"><button class="icon-btn" data-act="edit-subject" data-id="${s.id}" title="Upravit">✏️</button></div></a>`;
+  }).join("");
+  return `${topbar()}<main class="page">${aiBanner()}
+    <div class="hero"><div class="grow"><h1>Ahoj${profile().name ? ", " + esc(profile().name) : ""} 👋</h1>
+      <p>${mine.length ? (due ? `Dnes na tebe čeká ${plural(due, "kartička", "kartičky", "kartiček")} k opakování.` : "Všechno zopakováno. Můžeš přidat nové téma.") : "Začni tím, že si založíš předmět a nahraješ první zápisy."}</p></div>
+      <button class="btn primary" data-act="new-subject">+ Nový předmět</button></div>
+    ${subjects.length ? `<div class="grid">${cards}<button class="add-card" data-act="new-subject">+ Přidat předmět</button></div>`
+      : `<div class="card empty"><div class="big">📚</div><h3>Zatím tu nic není</h3><p>Založ si první předmět, třeba Dějepis nebo Matematiku.</p><button class="btn primary lg" data-act="new-subject">+ Založit předmět</button></div>`}
+  </main>`;
+}
+
+function viewSubject(s) {
+  const topics = S.topics.filter((t) => t.subjectId === s.id).sort((a, b) => b.createdAt - a.createdAt);
+  const list = topics.map((t) => `<a class="card topic" style="--c:${esc(s.color)}" href="#/t/${t.id}">
+      <div class="grow"><h3>${esc(t.title || "Nové téma")}</h3><div class="chips">
+        ${t.status === "processing" ? `<span class="chip accent"><span class="spinner" style="width:12px;height:12px;border-width:2px"></span> Zpracovávám…</span>` : ""}
+        ${t.status === "error" ? `<span class="chip bad">Chyba zpracování</span>` : ""}
+        ${testChip(t.testDate)}
+        ${t.cards ? `<span class="chip ${t.due ? "accent" : ""}">🃏 ${t.cards}${t.due ? ` · ${t.due} k opakování` : ""}</span>` : ""}
+        ${t.questions ? `<span class="chip">✅ ${plural(t.questions, "otázka", "otázky", "otázek")}</span>` : ""}
+        ${t.lastScore != null ? `<span class="chip ${t.lastScore >= 80 ? "ok" : t.lastScore >= 50 ? "warn" : "bad"}">Poslední test ${t.lastScore} %</span>` : ""}
+      </div></div><span class="muted">›</span></a>`).join("");
+  return `${topbar(`<span>›</span><a href="#/s/${s.id}">${esc(s.emoji)} ${esc(s.name)}</a>`)}<main class="page">${aiBanner()}
+    <div class="hero"><div class="grow"><h1>${esc(s.emoji)} ${esc(s.name)}</h1><p>${plural(topics.length, "téma", "témata", "témat")}</p></div>
+      <button class="btn primary" data-act="new-topic" data-id="${s.id}">+ Nové téma</button></div>
+    ${topics.length ? `<div class="topics">${list}</div>`
+      : `<div class="card empty"><div class="big">📄</div><h3>Nahraj první zápisy</h3><p>Vyfoť sešit, nahraj PDF nebo vlož text. Udělám z toho výpisky, kartičky a test.</p><button class="btn primary lg" data-act="new-topic" data-id="${s.id}">+ Nové téma</button></div>`}
+  </main>`;
+}
+
+// ---------- nahrávání materiálů ----------
+const readBase64 = (blob) => new Promise((resolve, reject) => {
+  const fr = new FileReader();
+  fr.onload = () => resolve(String(fr.result).split(",")[1]);
+  fr.onerror = () => reject(new Error("Soubor se nepodařilo přečíst."));
+  fr.readAsDataURL(blob);
+});
+
+// Fotky z mobilu mají i 10 MB; zmenšení na 2200 px stačí na čtení a zrychlí nahrání.
+async function prepareFile(file) {
+  if (file.type.startsWith("image/")) {
+    try {
+      const bitmap = await createImageBitmap(file);
+      const scale = Math.min(1, 2200 / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(bitmap.width * scale);
+      canvas.height = Math.round(bitmap.height * scale);
+      canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise((r) => canvas.toBlob(r, "image/jpeg", 0.88));
+      if (LOCAL) return { name: file.name, type: "image/jpeg", blob };
+      return { name: file.name, type: "image/jpeg", data: await readBase64(blob) };
+    } catch {
+      throw new Error(`Obrázek „${file.name}“ se nepodařilo načíst. Zkus JPG nebo PNG.`);
+    }
+  }
+  if (LOCAL) return { name: file.name, type: file.type, blob: file };
+  return { name: file.name, type: file.type, data: await readBase64(file) };
+}
+
+// mode: {subjectId} pro nové téma, {topic} pro přidání materiálu
+function uploadModal(mode) {
+  const isNew = Boolean(mode.subjectId);
+  let files = [];
+  modal(`<form>
+    <h2>${isNew ? "Nové téma" : "Přidat materiál"}</h2>
+    ${isNew ? `<label class="field"><span>Název <em>(nepovinné, jinak ho vymyslím)</em></span><input class="input" name="title" placeholder="např. Druhá světová válka"></label>` : ""}
+    <div class="drop" tabindex="0"><div class="big">📎</div><b>Přetáhni sem soubory nebo klikni</b><div class="small">PDF, fotky zápisů, Word (.docx), text</div></div>
+    <input type="file" multiple hidden accept=".pdf,.docx,.txt,.md,image/*">
+    <div class="files"></div>
+    <label class="field"><span>Nebo vlož text</span><textarea class="input" name="text" rows="4" placeholder="Sem můžeš vložit zápis z hodiny…"></textarea></label>
+    ${isNew ? `<div class="row" style="align-items:flex-start">
+        <label class="field grow"><span>Datum testu <em>(nepovinné)</em></span><input class="input" type="date" name="testDate"></label>
+        <label class="field grow" style="flex:2"><span>Na co se zaměřit <em>(nepovinné)</em></span><input class="input" name="instructions" placeholder="např. hlavně letopočty"></label></div>`
+      : `<label class="row" style="margin-bottom:6px"><input type="checkbox" name="regenerate" checked> Vygenerovat znovu výpisky, kartičky a test ze všech materiálů</label>`}
+    <div class="modal-foot"><button type="button" class="btn" data-close>Zrušit</button><button class="btn primary">✨ ${isNew ? "Vytvořit" : "Přidat"}</button></div>
+  </form>`, (el, close) => {
+    const input = el.querySelector("input[type=file]");
+    const drop = el.querySelector(".drop");
+    const list = el.querySelector(".files");
+    const draw = () => {
+      list.innerHTML = files.map((f, i) => `<div class="file">${f.type.startsWith("image/") ? "🖼️" : "📄"}<span>${esc(f.name)}</span><span class="muted small" style="flex:none">${(f.size / 1048576).toFixed(1)} MB</span><button type="button" class="icon-btn" data-rm="${i}">✕</button></div>`).join("");
+    };
+    const add = (picked) => { files.push(...picked); draw(); };
+    drop.onclick = () => input.click();
+    drop.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } };
+    input.onchange = () => { add([...input.files]); input.value = ""; };
+    drop.ondragover = (e) => { e.preventDefault(); drop.classList.add("over"); };
+    drop.ondragleave = () => drop.classList.remove("over");
+    drop.ondrop = (e) => { e.preventDefault(); drop.classList.remove("over"); add([...e.dataTransfer.files]); };
+    list.onclick = (e) => { const b = e.target.closest("[data-rm]"); if (b) { files.splice(Number(b.dataset.rm), 1); draw(); } };
+
+    el.querySelector("form").onsubmit = async (e) => {
+      e.preventDefault();
+      const form = Object.fromEntries(new FormData(e.target));
+      if (!files.length && !form.text.trim()) return toast("Nahraj soubor nebo vlož text.", true);
+      if (files.filter((f) => !f.type.startsWith("image/")).reduce((n, f) => n + f.size, 0) > 40 * 1048576) return toast("Soubory jsou dohromady moc velké (limit 40 MB).", true);
+      const button = e.target.querySelector(".btn.primary");
+      button.disabled = true;
+      button.textContent = "Nahrávám…";
+      try {
+        const body = { ...form, files: await Promise.all(files.map(prepareFile)) };
+        if (isNew) await createTopic({ ...body, subjectId: mode.subjectId }, close);
+        else { close(); await runProcessing(`/topics/${mode.topic.id}/sources`, { ...body, regenerate: form.regenerate === "on" }, mode.topic.id); }
+      } catch (err) {
+        fail(err);
+        if (button.isConnected) { button.disabled = false; button.textContent = "✨ Zkusit znovu"; }
+      }
+    };
+  });
+}
+
+async function createTopic(body, close) {
+  let id = null;
+  try {
+    await stream("/topics", body, (ev) => {
+      if (ev.type === "created") {
+        id = ev.id;
+        S.streaming = id;
+        S.topic = null;
+        close();
+        go(`#/t/${id}`);
+      } else onProcessEvent(id, ev);
+    });
+  } finally {
+    if (S.streaming === id) S.streaming = null;
+    refresh().catch(() => {});
+  }
+}
+
+function onProcessEvent(id, ev) {
+  if (S.topic?.id !== id) return;
+  if (ev.type === "progress") { S.topic.status = "processing"; S.topic.progress = ev.progress; }
+  if (ev.type === "done") { S.topic = ev.topic; if (ev.topic.error) toast(ev.topic.error, true); }
+  drawTopic();
+}
+
+// Spuštění generování nad existujícím tématem (přidání materiálu, „vygenerovat znovu“).
+async function runProcessing(url, body, id) {
+  S.streaming = id;
+  if (S.topic?.id === id) { S.topic.status = "processing"; S.topic.progress = S.topic.progress || {}; drawTopic(); }
+  try {
+    await stream(url, body, (ev) => onProcessEvent(id, ev));
+  } catch (err) {
+    fail(err);
+    if (S.topic?.id === id) { S.topic = await api("GET", `/topics/${id}`); drawTopic(); }
+  } finally {
+    S.streaming = null;
+    refresh().catch(() => {});
+  }
+}
+
+// ---------- stránka tématu ----------
+let pollTimer = null;
+
+async function renderTopicRoute(r) {
+  clearTimeout(pollTimer);
+  if (S.topic?.id !== r.id) {
+    S.topic = null;
+    $("#app").innerHTML = `${topbar()}<main class="page"><div class="empty"><div class="spinner" style="margin:0 auto"></div></div></main>`;
+    try {
+      const topic = await api("GET", `/topics/${r.id}`);
+      if (route().id !== r.id) return;
+      S.topic = topic;
+    } catch (err) { fail(err); return go("#/"); }
+  }
+  drawTopic();
+}
+
+const TABS = [["notes", "📝 Výpisky"], ["cards", "🃏 Kartičky"], ["quiz", "✅ Test"], ["sources", "📎 Materiály"]];
+const currentTab = () => TABS.some(([k]) => k === route().tab) ? route().tab : "notes";
+
+function drawTopic() {
+  const t = S.topic;
+  const r = route();
+  if (!t || r.view !== "t" || r.id !== t.id) return;
+  const subject = S.subjects.find((s) => s.id === t.subjectId);
+  const tab = currentTab();
+  const counts = { cards: t.flashcards.length, quiz: t.quiz.length, sources: t.sources.length };
+  const processing = t.status === "processing";
+
+  // Když zpracování běží bez našeho streamu (např. po obnovení stránky), doptáváme se.
+  clearTimeout(pollTimer);
+  if (processing && S.streaming !== t.id) {
+    pollTimer = setTimeout(async () => {
+      try { const fresh = await api("GET", `/topics/${t.id}`); if (S.topic?.id === t.id) { S.topic = fresh; drawTopic(); if (fresh.status !== "processing") refresh(); } } catch { /* zkusíme příště */ }
+    }, 3000);
+  }
+
+  const chatScroll = $(".chat-body")?.scrollTop;
+  const draft = $("#chat-text")?.value || "";
+  $("#app").innerHTML = `${topbar(subject ? `<span>›</span><a href="#/s/${subject.id}">${esc(subject.emoji)} ${esc(subject.name)}</a>` : "")}
+  <div class="topic-layout">
+    <main>
+      ${aiBanner()}
+      <div class="topic-head"><h1>${esc(t.title || "Nové téma")}</h1>
+        <button class="icon-btn" data-act="edit-topic" title="Přejmenovat / datum testu">✏️</button>
+        <button class="icon-btn" data-act="delete-topic" title="Smazat téma">🗑️</button>
+        <div class="chips" style="margin-top:8px">${testChip(t.testDate)}${t.due ? `<span class="chip accent">🃏 ${t.due} k opakování</span>` : ""}</div></div>
+      ${t.error && !processing ? `<div class="banner bad">${esc(t.error)}</div>` : ""}
+      ${processing ? `<div class="card pane">${viewProcessing(t)}</div>` : `
+        <div class="tabs">${TABS.map(([k, label]) => `<button class="tab ${k === tab ? "active" : ""}" data-act="tab" data-tab="${k}">${label}${counts[k] ? `<span class="n">${counts[k]}</span>` : ""}</button>`).join("")}</div>
+        <div class="card pane" id="pane">${viewPane(tab)}</div>`}
+    </main>
+    ${processing ? "" : viewChat(draft)}
+  </div>
+  ${processing ? "" : `<button class="btn primary fab" data-act="chat-open">💬 Zeptej se AI</button>`}`;
+  const body = $(".chat-body");
+  if (body) body.scrollTop = chatScroll ?? body.scrollHeight;
+}
+
+function drawPane() {
+  const pane = $("#pane");
+  if (pane) { hideSelBar(); pane.innerHTML = viewPane(currentTab()); }
+  else drawTopic();
+}
+
+function viewProcessing(t) {
+  const p = t.progress || {};
+  const steps = [["read", "Čtu materiály"], ["notes", "Píšu výpisky"], ["flashcards", "Vyrábím kartičky"], ["quiz", "Sestavuji test"]];
+  return `<div style="text-align:center;padding:20px 0"><div style="font-size:2.6rem">✨</div><h2>Pracuji na tom…</h2>
+    <p class="muted" style="margin-top:6px">Obvykle to trvá 1–3 minuty. ${LOCAL ? "Nech stránku otevřenou, dokud to nedoběhne." : "Stránku klidně zavři, dodělám to i tak."}</p>
+    <div class="steps">${steps.filter(([k]) => p[k] !== "skip").map(([k, label]) => {
+      const st = p[k] || "wait";
+      return `<div class="step ${st}"><span class="dot">${st === "run" ? `<span class="spinner"></span>` : st === "done" ? "✓" : st === "error" ? "!" : ""}</span>${label}</div>`;
+    }).join("")}</div></div>`;
+}
+
+function viewPane(tab) {
+  if (tab === "cards") return S.study ? viewStudy() : viewCards();
+  if (tab === "quiz") return S.quiz ? viewQuizRun() : viewQuizStart();
+  if (tab === "sources") return viewSources();
+  return viewNotes();
+}
+
+const regenButton = (part, label = "↻ Vygenerovat znovu") => `<button class="btn sm ghost" data-act="regen" data-part="${part}">${label}</button>`;
+const emptyPart = (icon, title, part) => `<div class="empty"><div class="big">${icon}</div><h3>${title}</h3><button class="btn primary" data-act="regen" data-part="${part}" data-now="1">✨ Vygenerovat</button></div>`;
+
+// ----- výpisky -----
+function viewNotes() {
+  const t = S.topic;
+  if (S.notesEdit) {
+    return `<div class="pane-tools"><b>Ruční úprava</b><span class="muted small">Markdown · ==zvýraznění== · $vzorec$</span><span class="spacer"></span>
+      <button class="btn sm" data-act="notes-cancel">Zrušit</button><button class="btn sm primary" data-act="notes-save">Uložit</button></div>
+      <textarea class="input notes-editor" id="notes-src">${esc(t.notes)}</textarea>`;
+  }
+  if (!t.notes) return emptyPart("📝", "Výpisky tu zatím nejsou", "notes");
+  return `<div class="pane-tools"><span class="muted small">Tip: označ text a zvýrazni ho, nebo si ho nech vysvětlit.</span><span class="spacer"></span>
+      <button class="btn sm ghost" data-act="notes-edit">✏️ Upravit</button>${LOCAL ? "" : `<button class="btn sm ghost" data-act="print">🖨️ Tisk / PDF</button>`}${regenButton("notes")}</div>
+    <article class="prose" id="notes">${md(t.notes)}</article>`;
+}
+
+let selBar = null;
+function hideSelBar() { selBar?.remove(); selBar = null; }
+function showSelBar(x, y, buttons) {
+  hideSelBar();
+  selBar = document.createElement("div");
+  selBar.className = "sel-bar";
+  selBar.style.left = Math.max(110, Math.min(innerWidth - 110, x)) + "px";
+  selBar.style.top = y + scrollY - 8 + "px";
+  selBar.innerHTML = buttons.map(([act, label]) => `<button data-act="${act}">${label}</button>`).join("");
+  selBar.addEventListener("mousedown", (e) => e.preventDefault()); // ať klik nezruší výběr
+  document.body.append(selBar);
+}
+
+let picked = ""; // text, kterého se týká nabídka nad výběrem
+function onSelection(e) {
+  const notes = $("#notes");
+  if (!notes || e.target.closest?.(".sel-bar")) return;
+  const sel = getSelection();
+  const text = sel.toString().trim();
+  if (text && sel.rangeCount && notes.contains(sel.anchorNode) && notes.contains(sel.focusNode)) {
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    picked = text;
+    return showSelBar(rect.left + rect.width / 2, rect.top, [["sel-mark", "🖍️ Zvýraznit"], ["sel-explain", "💡 Vysvětlit"], ["sel-card", "🃏 Kartička"]]);
+  }
+  const mark = e.target.closest?.("#notes mark");
+  if (mark) {
+    const rect = mark.getBoundingClientRect();
+    picked = mark.textContent;
+    return showSelBar(rect.left + rect.width / 2, rect.top, [["sel-unmark", "Zrušit zvýraznění"], ["sel-explain", "💡 Vysvětlit"]]);
+  }
+  hideSelBar();
+}
+document.addEventListener("mouseup", (e) => setTimeout(() => onSelection(e), 0));
+document.addEventListener("touchend", (e) => setTimeout(() => onSelection(e), 50));
+
+async function saveNotes(notes) {
+  S.topic = await api("PATCH", `/topics/${S.topic.id}`, { notes });
+  drawPane();
+}
+
+// ----- kartičky -----
+function viewCards() {
+  const t = S.topic;
+  if (!t.flashcards.length) return emptyPart("🃏", "Kartičky tu zatím nejsou", "flashcards") + `<div style="text-align:center"><button class="btn sm ghost" data-act="card-add">+ Přidat ručně</button></div>`;
+  const now = Date.now();
+  const due = t.flashcards.filter((c) => (c.due || 0) <= now).length;
+  const learned = t.flashcards.filter((c) => c.box >= 3).length;
+  return `<div class="stat-row">
+      <div class="stat"><b>${t.flashcards.length}</b><span>kartiček</span></div>
+      <div class="stat"><b>${due}</b><span>k opakování dnes</span></div>
+      <div class="stat"><b>${learned}</b><span>dobře naučených</span></div></div>
+    <div class="pane-tools">
+      ${due ? `<button class="btn primary" data-act="study" data-mode="due">▶ Procvičovat (${due})</button><button class="btn" data-act="study" data-mode="all">Projít všechny</button>`
+        : `<span class="chip ok">🎉 Dnes máš zopakováno</span><button class="btn" data-act="study" data-mode="all">▶ Projít všechny znovu</button>`}
+      <span class="spacer"></span><button class="btn sm ghost" data-act="card-add">+ Přidat</button>${regenButton("flashcards")}</div>
+    <div class="card-list">${t.flashcards.map((c) => `<div class="fc-row">
+        <div class="q"><div class="prose">${md(c.front, true)}</div><div class="boxes" title="Jak dobře kartičku umíš">${[1, 2, 3, 4, 5].map((i) => `<i class="${c.box >= i ? "on" : ""}"></i>`).join("")}</div></div>
+        <div class="a prose">${md(c.back, true)}</div>
+        <div class="ops"><button class="icon-btn" data-act="card-edit" data-id="${c.id}" title="Upravit">✏️</button><button class="icon-btn" data-act="card-del" data-id="${c.id}" title="Smazat">🗑️</button></div></div>`).join("")}</div>`;
+}
+
+function startStudy(mode) {
+  const now = Date.now();
+  const cards = S.topic.flashcards.filter((c) => mode === "all" || (c.due || 0) <= now);
+  if (!cards.length) return;
+  S.study = { queue: shuffle(cards.map((c) => c.id)), total: cards.length, done: 0, missed: new Set(), flipped: false };
+  drawPane();
+}
+
+function viewStudy() {
+  const st = S.study;
+  const card = S.topic.flashcards.find((c) => c.id === st.queue[0]);
+  if (!card) {
+    const ok = st.total - st.missed.size;
+    return `<div class="empty"><div class="big">🎉</div><h3>Hotovo!</h3><p>${ok} z ${st.total} napoprvé správně.${st.missed.size ? " Ty, co nešly, ti ukážu zase brzy." : ""}</p>
+      <button class="btn primary" data-act="study-end">Zpět na kartičky</button></div>`;
+  }
+  return `<div class="study ${st.flipped ? "is-flipped" : ""}">
+    <div class="row"><button class="btn sm ghost" data-act="study-end">← Ukončit</button><span class="spacer"></span><span class="muted small">${st.done} / ${st.total}</span></div>
+    <div class="progress"><i style="width:${(st.done / st.total) * 100}%"></i></div>
+    <div class="flip ${st.flipped ? "flipped" : ""}" data-act="flip"><div class="flip-inner">
+      <div class="face"><span class="tag">Otázka</span><div class="prose">${md(card.front)}</div></div>
+      <div class="face back"><span class="tag">Odpověď</span><div class="prose">${md(card.back)}</div></div></div></div>
+    <div class="when-back"><div class="study-actions"><button class="btn lg bad" data-act="rate" data-known="0">✗ Nevím</button><button class="btn lg ok" data-act="rate" data-known="1">✓ Umím</button></div>
+      <p class="hint"><kbd>1</kbd> nevím · <kbd>2</kbd> umím</p></div>
+    <div class="when-front"><div class="study-actions" style="grid-template-columns:1fr"><button class="btn lg primary" data-act="flip">Ukázat odpověď</button></div><p class="hint"><kbd>mezerník</kbd> otočí kartičku</p></div>
+  </div>`;
+}
+
+function rateCard(known) {
+  const st = S.study;
+  const id = st.queue.shift();
+  st.flipped = false;
+  if (known) {
+    st.done++;
+    // Kartička, která v tomhle kole nešla, zůstává k opakování na zítra.
+    if (!st.missed.has(id)) review(id, true);
+  } else {
+    if (!st.missed.has(id)) review(id, false);
+    st.missed.add(id);
+    st.queue.splice(Math.min(st.queue.length, 3), 0, id);
+  }
+  drawPane();
+}
+
+async function review(cardId, known) {
+  try {
+    const out = await api("POST", `/topics/${S.topic.id}/review`, { cardId, known });
+    const card = S.topic.flashcards.find((c) => c.id === cardId);
+    if (card) Object.assign(card, out.card);
+    S.topic.due = out.due;
+  } catch (err) { fail(err); }
+}
+
+async function saveCards(cards) {
+  S.topic = await api("PATCH", `/topics/${S.topic.id}`, { flashcards: cards });
+  drawTopic();
+}
+
+// ----- test -----
+function viewQuizStart() {
+  const t = S.topic;
+  if (!t.quiz.length) return emptyPart("✅", "Test tu zatím není", "quiz");
+  const last = t.attempts[t.attempts.length - 1];
+  const wrong = last ? t.quiz.filter((q) => last.wrong?.includes(q.id)) : [];
+  const types = { choice: "výběr", truefalse: "pravda/nepravda", open: "otevřená" };
+  return `<div style="text-align:center;padding:10px 0 4px"><div style="font-size:2.6rem">✅</div>
+      <h2>${plural(t.quiz.length, "otázka", "otázky", "otázek")}</h2>
+      <p class="muted" style="margin:6px 0 20px">Po každé odpovědi hned uvidíš, jestli je správně a proč.</p>
+      <div class="row" style="justify-content:center">
+        <button class="btn primary lg" data-act="quiz-start">▶ Spustit test</button>
+        ${wrong.length ? `<button class="btn lg" data-act="quiz-start" data-wrong="1">Jen ${plural(wrong.length, "chybná", "chybné", "chybných")} z minula</button>` : ""}
+      </div></div>
+    ${t.attempts.length ? `<div style="max-width:420px;margin:28px auto 0"><b class="small">Předchozí pokusy</b>
+      <div class="history">${t.attempts.slice(-12).map((a) => `<i style="height:${Math.max(6, (a.score / a.total) * 100)}%" title="${Math.round((a.score / a.total) * 100)} %"></i>`).join("")}</div>
+      <div class="muted small">Naposledy ${Math.round((last.score / last.total) * 100)} % · ${new Date(last.at).toLocaleDateString("cs-CZ")}</div></div>` : ""}
+    <details class="manage"><summary>Správa otázek</summary>
+      <div class="pane-tools"><span class="muted small">Otázky uprav nebo přidej přes AI v chatu („přidej 5 těžších otázek“).</span><span class="spacer"></span>${regenButton("quiz")}</div>
+      <div class="card-list">${t.quiz.map((q, i) => `<div class="q-row"><b>${i + 1}.</b><div class="grow"><div class="prose">${md(q.question, true)}</div>
+        <div class="muted small">${types[q.type]} · správně: ${q.type === "open" ? md(q.answer, true) : md(q.options[q.correct], true)}</div></div>
+        <button class="icon-btn" data-act="q-del" data-id="${q.id}" title="Smazat">🗑️</button></div>`).join("")}</div></details>`;
+}
+
+function startQuiz(onlyWrong) {
+  const t = S.topic;
+  const last = t.attempts[t.attempts.length - 1];
+  const pool = onlyWrong ? t.quiz.filter((q) => last?.wrong?.includes(q.id)) : t.quiz;
+  if (!pool.length) return;
+  S.quiz = { questions: shuffle(pool), i: 0, results: [], current: null, grading: false, practice: Boolean(onlyWrong) };
+  drawPane();
+}
+
+function viewQuizRun() {
+  const qz = S.quiz;
+  if (qz.i >= qz.questions.length) return viewQuizEnd();
+  const q = qz.questions[qz.i];
+  const cur = qz.current; // {given, points, verdict, feedback}
+  const letters = "ABCDEFGH";
+  let body;
+  if (q.type === "open") {
+    body = `<textarea class="input" id="open-answer" rows="4" placeholder="Napiš odpověď vlastními slovy…" ${cur || qz.grading ? "disabled" : ""}>${esc(cur?.given || qz.draft || "")}</textarea>
+      ${cur ? "" : `<div class="row" style="margin-top:12px"><button class="btn primary" data-act="quiz-open" ${qz.grading ? "disabled" : ""}>${qz.grading ? `<span class="spinner" style="width:16px;height:16px"></span> Hodnotím…` : "Zkontrolovat"}</button>
+        <button class="btn ghost" data-act="quiz-skip" ${qz.grading ? "disabled" : ""}>Nevím</button></div>`}`;
+  } else {
+    body = `<div class="options">${q.options.map((o, i) => {
+      const cls = cur ? (i === q.correct ? "right" : i === cur.given ? "wrong" : "") : "";
+      return `<button class="option ${cls}" data-act="quiz-pick" data-i="${i}" ${cur ? "disabled" : ""}><span class="key">${letters[i]}</span><span class="prose">${md(o, true)}</span></button>`;
+    }).join("")}</div>`;
+  }
+  const verdict = cur && (cur.points === 1 ? "right" : cur.points > 0 ? "partial" : "wrong");
+  const title = { right: "✓ Správně", partial: "◐ Částečně správně", wrong: "✗ Špatně" }[verdict];
+  return `<div class="question">
+    <div class="row"><button class="btn sm ghost" data-act="quiz-end">← Ukončit</button><span class="spacer"></span><span class="muted small">Otázka ${qz.i + 1} z ${qz.questions.length}</span></div>
+    <div class="progress"><i style="width:${(qz.i / qz.questions.length) * 100}%"></i></div>
+    <h2>${md(q.question, true)}</h2>
+    ${body}
+    ${cur ? `<div class="feedback ${verdict}"><b>${title}</b><div class="prose">
+        ${cur.feedback ? md(cur.feedback) : ""}${q.type === "open" ? md("**Vzorová odpověď:** " + q.answer) : ""}${q.explanation ? md(q.explanation) : ""}</div></div>
+      <div class="row" style="margin-top:16px"><button class="btn ghost sm" data-act="quiz-explain">💡 Nechápu, vysvětli mi to</button><span class="spacer"></span>
+      <button class="btn primary" data-act="quiz-next" autofocus>${qz.i + 1 < qz.questions.length ? "Další →" : "Vyhodnotit"}</button></div>` : ""}
+  </div>`;
+}
+
+function answerQuiz(result) {
+  const qz = S.quiz;
+  qz.current = result;
+  qz.results.push({ q: qz.questions[qz.i], ...result });
+  qz.grading = false;
+  qz.draft = "";
+  drawPane();
+  $("[data-act=quiz-next]")?.focus();
+}
+
+function viewQuizEnd() {
+  const qz = S.quiz;
+  const score = qz.results.reduce((n, r) => n + r.points, 0);
+  const pct = Math.round((score / qz.results.length) * 100);
+  const text = pct >= 90 ? "Paráda, tohle umíš! 🏆" : pct >= 70 ? "Dobrá práce, ještě doladit detaily." : pct >= 50 ? "Základ tam je. Projdi si chyby a zkus to znovu." : "Chce to ještě zabrat. Začni výpisky a kartičkami.";
+  const letters = "ABCDEFGH";
+  return `<div class="question" style="text-align:center">
+    <div class="score-ring" style="--p:${pct}"><div>${pct}%</div></div>
+    <h2 style="margin:0 0 4px">${text}</h2><p class="muted">${score % 1 ? score.toFixed(1) : score} z ${qz.results.length} bodů</p>
+    <div class="row" style="justify-content:center;margin-top:18px"><button class="btn primary" data-act="quiz-start">↻ Znovu</button><button class="btn" data-act="quiz-end">Zpět</button></div>
+    <div class="review">${qz.results.map((r) => {
+      const cls = r.points === 1 ? "right" : r.points > 0 ? "partial" : "";
+      const given = r.q.type === "open" ? esc(r.given || "(bez odpovědi)") : r.given == null ? "(bez odpovědi)" : md(r.q.options[r.given], true);
+      const right = r.q.type === "open" ? md(r.q.answer, true) : `${letters[r.q.correct]}) ${md(r.q.options[r.q.correct], true)}`;
+      return `<div class="review-item ${cls}"><div class="prose"><p><b>${md(r.q.question, true)}</b></p>
+        ${r.points === 1 ? "" : `<p class="muted">Tvoje odpověď: ${given}</p>`}<p>Správně: ${right}</p>${r.points === 1 ? "" : md(r.feedback || r.q.explanation || "")}</div>
+        ${r.points === 1 ? "" : `<button class="btn ghost sm" data-act="review-explain" data-id="${r.q.id}" style="margin-top:6px">💡 Vysvětli mi to</button>`}</div>`;
+    }).join("")}</div></div>`;
+}
+
+async function finishQuiz() {
+  const qz = S.quiz;
+  qz.i = qz.questions.length;
+  drawPane();
+  if (qz.practice || qz.saved) return; // opakování chyb se do historie nepočítá
+  qz.saved = true;
+  try {
+    const out = await api("POST", `/topics/${S.topic.id}/attempts`, {
+      score: qz.results.reduce((n, r) => n + r.points, 0),
+      total: qz.results.length,
+      wrong: qz.results.filter((r) => r.points < 1).map((r) => r.q.id),
+    });
+    S.topic.attempts = out.attempts;
+    refresh().catch(() => {});
+  } catch (err) { fail(err); }
+}
+
+const explainPrompt = (q, given) =>
+  `Nechápu tuhle otázku z testu, vysvětli mi to od základů.\n\nOtázka: ${q.question}\n${given ? `Moje odpověď: ${given}\n` : ""}Správná odpověď: ${q.type === "open" ? q.answer : q.options[q.correct]}`;
+
+// ----- materiály -----
+function viewSources() {
+  const t = S.topic;
+  const icons = { pdf: "📕", image: "🖼️", docx: "📄", text: "📝" };
+  return `<div class="pane-tools"><span class="muted small">Z těchto materiálů vychází výpisky, kartičky, test i odpovědi AI.</span><span class="spacer"></span>
+      <button class="btn sm primary" data-act="source-add">+ Přidat materiál</button></div>
+    ${t.sources.map((s) => `<details class="source"><summary>${icons[s.kind] || "📄"}<span class="grow">${esc(s.name)}</span>
+        <span class="muted small">${s.chars.toLocaleString("cs-CZ")} znaků</span>
+        <button class="icon-btn" data-act="source-del" data-id="${s.id}" title="Odebrat">🗑️</button></summary>
+        <pre>${esc(s.preview)}${s.chars > s.preview.length ? "\n\n… (zkráceno)" : ""}</pre></details>`).join("") || `<div class="empty">Žádné materiály.</div>`}`;
+}
+
+// ---------- chat ----------
+const SUGGESTIONS = [
+  ["Vysvětli mi to od základů", "Vysvětli mi celé tohle téma úplně od základů, jako bych o tom nikdy neslyšel."],
+  ["Zkrať výpisky", "Zkrať výpisky zhruba na polovinu, nech jen to nejdůležitější na test."],
+  ["Zvýrazni to hlavní", "Zvýrazni ve výpiscích to nejdůležitější, co se mám naučit."],
+  ["Přidej 10 kartiček", "Přidej 10 nových kartiček na věci, které ještě nejsou pokryté."],
+  ["Těžší test", "Udělej test těžší: víc otázek na pochopení a souvislosti."],
+  ["Co bude nejspíš v testu?", "Co z tohohle tématu bude nejspíš v testu? Seřaď to podle důležitosti."],
+  ["Vyzkoušej mě", "Vyzkoušej mě: ptej se mě po jedné otázce a vždy mi řekni, jestli jsem odpověděl správně."],
+];
+
+function viewChat(draft = "") {
+  return `<aside class="card chat ${S.chatOpen ? "open" : ""}">
+    <div class="chat-head"><span class="ai">✨</span><div class="grow"><b>Zeptej se AI</b><span class="muted small">Vysvětlím cokoliv a upravím výpisky, kartičky i test</span></div>
+      ${S.topic.chat.length ? `<button class="icon-btn" data-act="chat-clear" title="Smazat konverzaci">🧹</button>` : ""}
+      <button class="icon-btn chat-close" data-act="chat-close" title="Zavřít">✕</button></div>
+    <div class="chat-body">${viewMessages()}</div>
+    <div class="suggest">${SUGGESTIONS.map(([label], i) => `<button data-act="suggest" data-i="${i}">${label}</button>`).join("")}</div>
+    <form class="chat-input" id="chat-form"><textarea class="input" id="chat-text" rows="1" placeholder="Na co se chceš zeptat?">${esc(draft)}</textarea>
+      <button class="btn primary" title="Odeslat" ${S.sending ? "disabled" : ""}>➤</button></form>
+  </aside>`;
+}
+
+function viewMessage(m) {
+  if (m.role === "user") return `<div class="msg user">${esc(m.text)}</div>`;
+  const actions = m.actions?.length ? `<div class="actions">${m.actions.map((a) => `<span class="chip ok">✓ ${esc(a)}</span>`).join("")}</div>` : "";
+  if (m.error) return `<div class="msg assistant error">${m.text ? `<div class="prose">${md(m.text)}</div>` : ""}${actions}<div>⚠️ ${esc(m.error)}</div></div>`;
+  const body = m.text ? `<div class="prose">${md(m.text)}</div>` : "";
+  return `<div class="msg assistant">${body}${actions}${m.pending && !m.text ? `<span class="typing"><i></i><i></i><i></i></span>` : ""}</div>`;
+}
+
+function viewMessages() {
+  const chat = S.topic.chat;
+  if (!chat.length) return `<div class="chat-intro"><div class="big">💬</div><p><b>Něčemu nerozumíš?</b></p><p class="small">Zeptej se na cokoliv z materiálů. Vysvětlím to od začátku, nebo ti na přání upravím výpisky, kartičky i test.</p></div>`;
+  return chat.map(viewMessage).join("");
+}
+
+let chatFrame = 0;
+function drawLastMessage() {
+  cancelAnimationFrame(chatFrame);
+  chatFrame = requestAnimationFrame(() => {
+    const body = $(".chat-body");
+    if (!body) return;
+    const nearBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 120;
+    const last = S.topic.chat[S.topic.chat.length - 1];
+    if (body.lastElementChild?.classList.contains("assistant")) body.lastElementChild.outerHTML = viewMessage(last);
+    else body.innerHTML = viewMessages();
+    if (nearBottom) body.scrollTop = body.scrollHeight;
+  });
+}
+
+async function sendChat(text) {
+  text = text.trim();
+  const t = S.topic;
+  if (!text || !t) return;
+  if (S.sending) return toast("Počkej, až AI dopíše.");
+  S.sending = true;
+  S.chatOpen = true;
+  const reply = { role: "assistant", text: "", actions: [], pending: true };
+  t.chat.push({ role: "user", text }, reply);
+  // Překreslí se jen panel chatu, ať se neztratí rozepsaná odpověď v testu nebo úprava výpisků.
+  const panel = $(".chat");
+  if (panel) panel.outerHTML = viewChat(); else drawTopic();
+  const body = $(".chat-body");
+  if (body) body.scrollTop = body.scrollHeight;
+
+  // Úpravy od AI se promítnou hned, ale rozdělaný test nebo procvičování nepřekreslujeme pod rukama.
+  const applyTopic = (fresh) => {
+    if (S.topic?.id !== fresh.id) return;
+    const chat = S.topic.chat;
+    S.topic = { ...fresh, chat };
+    if (!S.study && !S.quiz && !S.notesEdit) drawPane();
+  };
+
+  try {
+    await stream(`/topics/${t.id}/chat`, { message: text }, (ev) => {
+      if (ev.type === "text") reply.text += ev.delta;
+      if (ev.type === "reset") reply.text = ev.text;
+      if (ev.type === "action" && !reply.actions.includes(ev.label)) reply.actions.push(ev.label);
+      if (ev.type === "topic") applyTopic(ev.topic);
+      if (ev.type === "error") { reply.error = ev.message; applyTopic(ev.topic); }
+      if (ev.type === "done") applyTopic(ev.topic);
+      if (S.topic?.id === t.id) drawLastMessage();
+    });
+  } catch (err) {
+    reply.error = err.message;
+  }
+  reply.pending = false;
+  reply.text = reply.text.trim();
+  S.sending = false;
+  if (S.topic?.id === t.id) {
+    drawLastMessage();
+    const send = $("#chat-form button");
+    if (send) send.disabled = false;
+    if (reply.actions.length) refresh().catch(() => {});
+  }
+}
+
+// ---------- akce ----------
+function subjectForm(subject) {
+  let emoji = subject?.emoji || EMOJIS[0];
+  let color = subject?.color || COLORS[Math.floor(Math.random() * COLORS.length)];
+  modal(`<form><h2>${subject ? "Upravit předmět" : "Nový předmět"}</h2>
+    <label class="field"><span>Název</span><input class="input" name="name" value="${esc(subject?.name || "")}" placeholder="např. Dějepis" required autofocus></label>
+    <div class="field"><span style="display:block;font-weight:600;font-size:.875rem;margin-bottom:6px">Ikona</span><div class="picks" data-kind="emoji">${EMOJIS.map((e) => `<button type="button" class="pick ${e === emoji ? "on" : ""}" data-v="${e}">${e}</button>`).join("")}</div></div>
+    <div class="field" style="margin-top:14px"><span style="display:block;font-weight:600;font-size:.875rem;margin-bottom:6px">Barva</span><div class="picks" data-kind="color">${COLORS.map((c) => `<button type="button" class="pick color ${c === color ? "on" : ""}" data-v="${c}" style="background:${c}"></button>`).join("")}</div></div>
+    <div class="modal-foot">${subject ? `<button type="button" class="btn danger ghost" data-del>Smazat předmět</button><span class="spacer"></span>` : ""}
+      <button type="button" class="btn" data-close>Zrušit</button><button class="btn primary">Uložit</button></div></form>`, (el, close) => {
+    el.addEventListener("click", (e) => {
+      const pick = e.target.closest(".pick");
+      if (!pick) return;
+      const group = pick.parentElement;
+      group.querySelectorAll(".pick").forEach((p) => p.classList.toggle("on", p === pick));
+      if (group.dataset.kind === "emoji") emoji = pick.dataset.v; else color = pick.dataset.v;
+    });
+    el.querySelector("[data-del]")?.addEventListener("click", async () => {
+      if (!(await confirmBox(`Smazat předmět „${subject.name}“ se všemi tématy?`))) return;
+      try { await api("DELETE", `/subjects/${subject.id}`); await refresh(); close(); go("#/"); } catch (err) { fail(err); }
+    });
+    el.querySelector("form").onsubmit = async (e) => {
+      e.preventDefault();
+      const body = { name: new FormData(e.target).get("name"), emoji, color, profileId: S.profileId };
+      try {
+        if (subject) await api("PATCH", `/subjects/${subject.id}`, body); else await api("POST", "/subjects", body);
+        await refresh(); close(); render();
+      } catch (err) { fail(err); }
+    };
+  });
+}
+
+async function cardForm(card) {
+  const v = await formBox(card ? "Upravit kartičku" : "Nová kartička", [
+    { name: "front", label: "Otázka", type: "textarea", rows: 2, value: card?.front },
+    { name: "back", label: "Odpověď", type: "textarea", rows: 3, value: card?.back },
+  ]);
+  if (!v.front.trim() || !v.back.trim()) return toast("Vyplň otázku i odpověď.", true);
+  const cards = S.topic.flashcards.map((c) => (c.id === card?.id ? { ...c, ...v } : c));
+  if (!card) cards.push(v);
+  await saveCards(cards);
+}
+
+const actions = {
+  reload() { if (LOCAL) start().catch(fail); else location.reload(); },
+  theme() {
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    store.set("theme", next);
+  },
+  "switch-profile"() { S.profileId = null; store.set("profile", null); go("#/"); render(); },
+  "pick-profile"(el) { S.profileId = el.dataset.id; store.set("profile", S.profileId); render(); },
+  async "new-profile"() {
+    const v = await formBox("Nový profil", [{ name: "name", label: "Jak ti říkají?", placeholder: "Jméno" }], "Vytvořit");
+    const p = await api("POST", "/profiles", { name: v.name, color: COLORS[S.profiles.length % COLORS.length] });
+    await refresh();
+    actions["pick-profile"]({ dataset: { id: p.id } });
+  },
+  "delete-profile"() {
+    modal(`<h2>Který profil smazat?</h2><p class="muted" style="margin-bottom:14px">Smaže se i se všemi předměty a tématy.</p>
+      <div class="picks">${S.profiles.map((p) => `<button class="btn danger" data-del="${p.id}">${esc(p.name)}</button>`).join("")}</div>
+      <div class="modal-foot"><button class="btn" data-close>Zrušit</button></div>`, (el, close) => {
+      el.addEventListener("click", async (e) => {
+        const id = e.target.closest("[data-del]")?.dataset.del;
+        if (!id) return;
+        try { await api("DELETE", `/profiles/${id}`); await refresh(); close(); render(); } catch (err) { fail(err); }
+      });
+    });
+  },
+  "new-subject"() { subjectForm(); },
+  "edit-subject"(el) { subjectForm(S.subjects.find((s) => s.id === el.dataset.id)); },
+  "new-topic"(el) { uploadModal({ subjectId: el.dataset.id }); },
+
+  tab(el) { S.study = null; S.quiz = null; S.notesEdit = false; go(`#/t/${S.topic.id}/${el.dataset.tab}`, true); drawTopic(); },
+  async "edit-topic"() {
+    const v = await formBox("Upravit téma", [
+      { name: "title", label: "Název", value: S.topic.title },
+      { name: "testDate", label: "Datum testu", type: "date", value: S.topic.testDate, optional: true },
+    ]);
+    S.topic = await api("PATCH", `/topics/${S.topic.id}`, v);
+    await refresh();
+    drawTopic();
+  },
+  async "delete-topic"() {
+    if (!(await confirmBox(`Smazat téma „${S.topic.title}“?`))) return;
+    const subjectId = S.topic.subjectId;
+    await api("DELETE", `/topics/${S.topic.id}`);
+    S.topic = null;
+    await refresh();
+    go(`#/s/${subjectId}`);
+  },
+  async regen(el) {
+    const part = el.dataset.part;
+    const names = { notes: "výpisky", flashcards: "kartičky", quiz: "test" };
+    let instructions = "";
+    if (!el.dataset.now) {
+      const v = await formBox(`Vygenerovat znovu ${names[part]}`, [{ name: "instructions", label: "Chceš to jinak?", hint: "(nepovinné)", type: "textarea", rows: 3, optional: true,
+        placeholder: part === "notes" ? "např. stručněji, víc tabulek…" : part === "quiz" ? "např. 20 otázek, těžší…" : "např. víc kartiček na letopočty…" }], "Vygenerovat");
+      instructions = v.instructions;
+    }
+    await runProcessing(`/topics/${S.topic.id}/generate`, { parts: [part], instructions }, S.topic.id);
+  },
+
+  "notes-edit"() { S.notesEdit = true; drawPane(); },
+  "notes-cancel"() { S.notesEdit = false; drawPane(); },
+  async "notes-save"() { const text = $("#notes-src").value; S.notesEdit = false; await saveNotes(text); toast("Uloženo"); },
+  print() { print(); },
+  async "sel-mark"() {
+    const notes = S.topic.notes;
+    getSelection().removeAllRanges();
+    hideSelBar();
+    // Jde to bez AI, pokud je označený text ve zdroji výpisků doslova (bez formátování uvnitř).
+    if (!picked.includes("\n") && notes.includes(picked) && !picked.includes("==")) {
+      await saveNotes(notes.replace(picked, () => `==${picked}==`));
+    } else {
+      sendChat(`Zvýrazni ve výpiscích tuhle část:\n„${picked}“`);
+    }
+  },
+  async "sel-unmark"() {
+    hideSelBar();
+    const notes = S.topic.notes;
+    if (notes.includes(`==${picked}==`)) await saveNotes(notes.replace(`==${picked}==`, () => picked));
+    else sendChat(`Zruš ve výpiscích zvýraznění u textu:\n„${picked}“`);
+  },
+  "sel-explain"() { getSelection().removeAllRanges(); hideSelBar(); sendChat(`Vysvětli mi od základů tuhle část výpisků:\n„${picked}“`); },
+  "sel-card"() { getSelection().removeAllRanges(); hideSelBar(); sendChat(`Udělej z téhle části výpisků kartičku (nebo víc, pokud je tam víc faktů):\n„${picked}“`); },
+
+  study(el) { startStudy(el.dataset.mode); },
+  "study-end"() { S.study = null; drawTopic(); refresh().catch(() => {}); },
+  flip() {
+    if (!S.study) return;
+    S.study.flipped = !S.study.flipped;
+    $(".flip")?.classList.toggle("flipped", S.study.flipped);
+    $(".study")?.classList.toggle("is-flipped", S.study.flipped);
+  },
+  rate(el) { rateCard(el.dataset.known === "1"); },
+  "card-add"() { return cardForm(); },
+  "card-edit"(el) { return cardForm(S.topic.flashcards.find((c) => c.id === el.dataset.id)); },
+  async "card-del"(el) { await saveCards(S.topic.flashcards.filter((c) => c.id !== el.dataset.id)); },
+
+  "quiz-start"(el) { startQuiz(el.dataset.wrong === "1"); },
+  "quiz-end"() { S.quiz = null; drawTopic(); },
+  "quiz-pick"(el) {
+    const q = S.quiz.questions[S.quiz.i];
+    if (S.quiz.current) return;
+    const given = Number(el.dataset.i);
+    answerQuiz({ given, points: given === q.correct ? 1 : 0 });
+  },
+  async "quiz-open"() {
+    const qz = S.quiz;
+    const q = qz.questions[qz.i];
+    const given = $("#open-answer").value.trim();
+    if (!given) return toast("Napiš odpověď, nebo dej „Nevím“.");
+    qz.grading = true;
+    qz.draft = given;
+    drawPane();
+    try {
+      const out = await api("POST", `/topics/${S.topic.id}/grade`, { questionId: q.id, answer: given });
+      if (S.quiz !== qz) return;
+      answerQuiz({ given, points: { correct: 1, partial: 0.5, wrong: 0 }[out.verdict] ?? 0, feedback: out.feedback });
+    } catch (err) {
+      qz.grading = false;
+      if (S.quiz === qz) drawPane();
+      fail(err);
+    }
+  },
+  "quiz-skip"() { answerQuiz({ given: "", points: 0 }); },
+  "quiz-next"() {
+    const qz = S.quiz;
+    qz.current = null;
+    if (qz.i + 1 >= qz.questions.length) return finishQuiz();
+    qz.i++;
+    drawPane();
+  },
+  "quiz-explain"() {
+    const qz = S.quiz;
+    const q = qz.questions[qz.i];
+    const given = q.type === "open" ? qz.current.given : q.options[qz.current.given];
+    sendChat(explainPrompt(q, given));
+  },
+  "review-explain"(el) {
+    const r = S.quiz.results.find((x) => x.q.id === el.dataset.id);
+    sendChat(explainPrompt(r.q, r.q.type === "open" ? r.given : r.q.options[r.given]));
+  },
+  async "q-del"(el) {
+    S.topic = await api("PATCH", `/topics/${S.topic.id}`, { deleteQuestions: [el.dataset.id] });
+    const open = true;
+    drawTopic();
+    const d = $("details.manage");
+    if (d) d.open = open;
+  },
+
+  "source-add"() { uploadModal({ topic: S.topic }); },
+  async "source-del"(el) {
+    if (!(await confirmBox("Odebrat tento materiál?", "Odebrat"))) return;
+    S.topic = await api("DELETE", `/topics/${S.topic.id}/sources/${el.dataset.id}`);
+    drawTopic();
+  },
+
+  "chat-open"() { S.chatOpen = true; $(".chat")?.classList.add("open"); $("#chat-text")?.focus(); },
+  "chat-close"() { S.chatOpen = false; $(".chat")?.classList.remove("open"); },
+  async "chat-clear"() {
+    if (S.sending) return;
+    if (!(await confirmBox("Smazat celou konverzaci?"))) return;
+    await api("DELETE", `/topics/${S.topic.id}/chat`);
+    S.topic.chat = [];
+    drawTopic();
+  },
+  suggest(el) { sendChat(SUGGESTIONS[Number(el.dataset.i)][1]); },
+};
+
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-act]");
+  const link = !el && LOCAL && e.target.closest('a[href^="#/"]');
+  if (link) { e.preventDefault(); return go(link.getAttribute("href")); }
+  if (!el) return;
+  const act = actions[el.dataset.act];
+  if (!act) return;
+  if (el.closest("a")) e.preventDefault(); // tlačítka uvnitř karet-odkazů
+  Promise.resolve().then(() => act(el)).catch(fail);
+});
+
+document.addEventListener("submit", (e) => {
+  if (e.target.id !== "chat-form") return;
+  e.preventDefault();
+  const input = $("#chat-text");
+  const text = input.value;
+  input.value = "";
+  sendChat(text);
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.id === "chat-text" && e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+    e.preventDefault();
+    e.target.form.requestSubmit();
+    return;
+  }
+  if (e.target.matches("input, textarea") || $("#modals").children.length) return;
+  if (S.study && route().view === "t") {
+    if (e.key === " " || e.key === "Enter") { e.preventDefault(); actions.flip(); }
+    else if (S.study.flipped && e.key === "1") rateCard(false);
+    else if (S.study.flipped && e.key === "2") rateCard(true);
+  } else if (S.quiz && !S.quiz.current && S.quiz.i < S.quiz.questions.length) {
+    const q = S.quiz.questions[S.quiz.i];
+    const i = "abcdefgh".indexOf(e.key.toLowerCase());
+    if (q.type !== "open" && i >= 0 && i < q.options.length) actions["quiz-pick"]({ dataset: { i } });
+  }
+});
+
+// automatická výška pole chatu
+document.addEventListener("input", (e) => {
+  if (e.target.id !== "chat-text") return;
+  e.target.style.height = "auto";
+  e.target.style.height = Math.min(e.target.scrollHeight + 2, 160) + "px";
+});
+
+// ---------- start ----------
+async function start() {
+  S.config = LOCAL ? await window.Backend.boot() : await (await fetch("/api/config")).json();
+  if (LOCAL) S.profileId = "me";
+  if (S.config.needsPassword && !store.get("password")) return renderLogin();
+  await refresh();
+  render();
+}
+start().catch((err) => {
+  if (!$("#login")) $("#app").innerHTML = `<div class="center-screen"><div class="center-card"><h1>😕</h1><p>${esc(err.message)}</p><button class="btn primary" data-act="reload" style="margin-top:16px">Zkusit znovu</button></div></div>`;
+});
+
+</script>

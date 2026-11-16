@@ -8,6 +8,9 @@ const store = {
   set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch { /* soukromé okno */ } },
 };
 
+// Verze bez serveru (artifact v Claude): window.Backend nahrazuje HTTP API.
+const LOCAL = Boolean(window.Backend);
+
 const S = {
   config: null,
   profiles: [], subjects: [], topics: [],
@@ -38,7 +41,7 @@ function md(text, inline = false) {
   html = DOMPurify.sanitize(html);
   return html.replace(/@@M(\d+)@@/g, (m, i) => {
     const { tex, display } = math[i];
-    try { return katex.renderToString(tex, { displayMode: display, throwOnError: false }); }
+    try { return katex.renderToString(tex, { displayMode: display, throwOnError: false, output: LOCAL ? "mathml" : "htmlAndMathml" }); }
     catch { return esc(tex); }
   });
 }
@@ -47,6 +50,7 @@ function md(text, inline = false) {
 const headers = () => ({ "Content-Type": "application/json", "x-app-password": store.get("password") || "" });
 
 async function api(method, url, body) {
+  if (LOCAL) return window.Backend.api(method, url, body);
   let res;
   try {
     res = await fetch("/api" + url, { method, headers: headers(), body: body ? JSON.stringify(body) : undefined });
@@ -61,6 +65,7 @@ async function api(method, url, body) {
 
 // POST, na který server odpovídá proudem událostí (průběh generování, text chatu).
 async function stream(url, body, onEvent) {
+  if (LOCAL) return window.Backend.stream(url, body, onEvent);
   let res;
   try {
     res = await fetch("/api" + url, { method: "POST", headers: headers(), body: JSON.stringify(body) });
@@ -153,9 +158,18 @@ function testChip(date) {
 }
 
 // ---------- směrování ----------
-const route = () => { const [view, id, tab] = location.hash.replace(/^#\/?/, "").split("/"); return { view, id, tab }; };
-const go = (hash) => { if (location.hash === hash) render(); else location.hash = hash; };
-addEventListener("hashchange", () => { S.study = null; S.quiz = null; S.notesEdit = false; S.chatOpen = false; render(); });
+// V artifactu se adresa stránky měnit nedá, takže si cestu držíme sami.
+let localHash = (LOCAL && store.get("route")) || "#/";
+const getHash = () => (LOCAL ? localHash : location.hash);
+const route = () => { const [view, id, tab] = getHash().replace(/^#\/?/, "").split("/"); return { view, id, tab }; };
+function onRoute() { S.study = null; S.quiz = null; S.notesEdit = false; S.chatOpen = false; render(); scrollTo(0, 0); }
+function go(hash, silent = false) {
+  if (LOCAL) { localHash = hash; store.set("route", hash); if (!silent) onRoute(); }
+  else if (silent) history.replaceState(null, "", hash);
+  else if (location.hash === hash) render();
+  else location.hash = hash;
+}
+addEventListener("hashchange", () => { if (!LOCAL) onRoute(); });
 
 function topbar(crumbs = "") {
   const p = profile();
@@ -163,11 +177,11 @@ function topbar(crumbs = "") {
     <a class="logo" href="#/"><i>🎓</i><span>Studovna</span></a>
     <nav class="crumbs">${crumbs}</nav>
     <span class="spacer"></span>
-    <button class="icon-btn" data-act="theme" title="Světlý / tmavý režim">🌓</button>
-    ${p ? `<button class="avatar" style="background:${esc(p.color)}" data-act="switch-profile" title="Přepnout profil (${esc(p.name)})">${initial(p.name)}</button>` : ""}
+    ${LOCAL ? "" : `<button class="icon-btn" data-act="theme" title="Světlý / tmavý režim">🌓</button>`}
+    ${p && !LOCAL ? `<button class="avatar" style="background:${esc(p.color)}" data-act="switch-profile" title="Přepnout profil (${esc(p.name)})">${initial(p.name)}</button>` : ""}
   </header>`;
 }
-const aiBanner = () => S.config.aiReady ? "" : `<div class="banner bad">AI není připojená: na serveru chybí <b>ANTHROPIC_API_KEY</b>. Doplň ho do souboru <code>.env</code> a restartuj server.</div>`;
+const aiBanner = () => S.config.aiReady ? "" : LOCAL ? `<div class="banner bad">AI tu teď není dostupná. Otevři stránku přihlášený v Claude a povol jí používat Claude.</div>` : `<div class="banner bad">AI není připojená: na serveru chybí <b>ANTHROPIC_API_KEY</b>. Doplň ho do souboru <code>.env</code> a restartuj server.</div>`;
 
 async function render() {
   const app = $("#app");
@@ -227,7 +241,7 @@ function viewHome() {
       <div class="card-menu"><button class="icon-btn" data-act="edit-subject" data-id="${s.id}" title="Upravit">✏️</button></div></a>`;
   }).join("");
   return `${topbar()}<main class="page">${aiBanner()}
-    <div class="hero"><div class="grow"><h1>Ahoj, ${esc(profile().name)} 👋</h1>
+    <div class="hero"><div class="grow"><h1>Ahoj${profile().name ? ", " + esc(profile().name) : ""} 👋</h1>
       <p>${mine.length ? (due ? `Dnes na tebe čeká ${plural(due, "kartička", "kartičky", "kartiček")} k opakování.` : "Všechno zopakováno. Můžeš přidat nové téma.") : "Začni tím, že si založíš předmět a nahraješ první zápisy."}</p></div>
       <button class="btn primary" data-act="new-subject">+ Nový předmět</button></div>
     ${subjects.length ? `<div class="grid">${cards}<button class="add-card" data-act="new-subject">+ Přidat předmět</button></div>`
@@ -273,11 +287,13 @@ async function prepareFile(file) {
       canvas.height = Math.round(bitmap.height * scale);
       canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
       const blob = await new Promise((r) => canvas.toBlob(r, "image/jpeg", 0.88));
+      if (LOCAL) return { name: file.name, type: "image/jpeg", blob };
       return { name: file.name, type: "image/jpeg", data: await readBase64(blob) };
     } catch {
       throw new Error(`Obrázek „${file.name}“ se nepodařilo načíst. Zkus JPG nebo PNG.`);
     }
   }
+  if (LOCAL) return { name: file.name, type: file.type, blob: file };
   return { name: file.name, type: file.type, data: await readBase64(file) };
 }
 
@@ -342,7 +358,7 @@ async function createTopic(body, close) {
         S.streaming = id;
         S.topic = null;
         close();
-        location.hash = `#/t/${id}`;
+        go(`#/t/${id}`);
       } else onProcessEvent(id, ev);
     });
   } finally {
@@ -442,7 +458,7 @@ function viewProcessing(t) {
   const p = t.progress || {};
   const steps = [["read", "Čtu materiály"], ["notes", "Píšu výpisky"], ["flashcards", "Vyrábím kartičky"], ["quiz", "Sestavuji test"]];
   return `<div style="text-align:center;padding:20px 0"><div style="font-size:2.6rem">✨</div><h2>Pracuji na tom…</h2>
-    <p class="muted" style="margin-top:6px">Obvykle to trvá 1–3 minuty. Stránku klidně zavři, dodělám to i tak.</p>
+    <p class="muted" style="margin-top:6px">Obvykle to trvá 1–3 minuty. ${LOCAL ? "Nech stránku otevřenou, dokud to nedoběhne." : "Stránku klidně zavři, dodělám to i tak."}</p>
     <div class="steps">${steps.filter(([k]) => p[k] !== "skip").map(([k, label]) => {
       const st = p[k] || "wait";
       return `<div class="step ${st}"><span class="dot">${st === "run" ? `<span class="spinner"></span>` : st === "done" ? "✓" : st === "error" ? "!" : ""}</span>${label}</div>`;
@@ -469,7 +485,7 @@ function viewNotes() {
   }
   if (!t.notes) return emptyPart("📝", "Výpisky tu zatím nejsou", "notes");
   return `<div class="pane-tools"><span class="muted small">Tip: označ text a zvýrazni ho, nebo si ho nech vysvětlit.</span><span class="spacer"></span>
-      <button class="btn sm ghost" data-act="notes-edit">✏️ Upravit</button><button class="btn sm ghost" data-act="print">🖨️ Tisk / PDF</button>${regenButton("notes")}</div>
+      <button class="btn sm ghost" data-act="notes-edit">✏️ Upravit</button>${LOCAL ? "" : `<button class="btn sm ghost" data-act="print">🖨️ Tisk / PDF</button>`}${regenButton("notes")}</div>
     <article class="prose" id="notes">${md(t.notes)}</article>`;
 }
 
@@ -860,12 +876,13 @@ async function cardForm(card) {
 }
 
 const actions = {
+  reload() { if (LOCAL) start().catch(fail); else location.reload(); },
   theme() {
     const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     store.set("theme", next);
   },
-  "switch-profile"() { S.profileId = null; store.set("profile", null); location.hash = "#/"; render(); },
+  "switch-profile"() { S.profileId = null; store.set("profile", null); go("#/"); render(); },
   "pick-profile"(el) { S.profileId = el.dataset.id; store.set("profile", S.profileId); render(); },
   async "new-profile"() {
     const v = await formBox("Nový profil", [{ name: "name", label: "Jak ti říkají?", placeholder: "Jméno" }], "Vytvořit");
@@ -888,7 +905,7 @@ const actions = {
   "edit-subject"(el) { subjectForm(S.subjects.find((s) => s.id === el.dataset.id)); },
   "new-topic"(el) { uploadModal({ subjectId: el.dataset.id }); },
 
-  tab(el) { S.study = null; S.quiz = null; S.notesEdit = false; history.replaceState(null, "", `#/t/${S.topic.id}/${el.dataset.tab}`); drawTopic(); },
+  tab(el) { S.study = null; S.quiz = null; S.notesEdit = false; go(`#/t/${S.topic.id}/${el.dataset.tab}`, true); drawTopic(); },
   async "edit-topic"() {
     const v = await formBox("Upravit téma", [
       { name: "title", label: "Název", value: S.topic.title },
@@ -1028,6 +1045,8 @@ const actions = {
 
 document.addEventListener("click", (e) => {
   const el = e.target.closest("[data-act]");
+  const link = !el && LOCAL && e.target.closest('a[href^="#/"]');
+  if (link) { e.preventDefault(); return go(link.getAttribute("href")); }
   if (!el) return;
   const act = actions[el.dataset.act];
   if (!act) return;
@@ -1071,11 +1090,12 @@ document.addEventListener("input", (e) => {
 
 // ---------- start ----------
 async function start() {
-  S.config = await (await fetch("/api/config")).json();
+  S.config = LOCAL ? await window.Backend.boot() : await (await fetch("/api/config")).json();
+  if (LOCAL) S.profileId = "me";
   if (S.config.needsPassword && !store.get("password")) return renderLogin();
   await refresh();
   render();
 }
 start().catch((err) => {
-  if (!$("#login")) $("#app").innerHTML = `<div class="center-screen"><div class="center-card"><h1>😕</h1><p>${esc(err.message)}</p><button class="btn primary" onclick="location.reload()" style="margin-top:16px">Zkusit znovu</button></div></div>`;
+  if (!$("#login")) $("#app").innerHTML = `<div class="center-screen"><div class="center-card"><h1>😕</h1><p>${esc(err.message)}</p><button class="btn primary" data-act="reload" style="margin-top:16px">Zkusit znovu</button></div></div>`;
 });
